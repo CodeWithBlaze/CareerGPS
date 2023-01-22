@@ -1,0 +1,9 @@
+.img-heading-container{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-evenly; */
+}
+.poster{
+    width:550px;
+    height: auto;
+}

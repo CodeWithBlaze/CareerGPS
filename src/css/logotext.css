@@ -1,0 +1,20 @@
+.logo-text-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    max-width: 550px;
+    
+}
+.icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+    border-radius: 50%;
+    background-color: #FF6060;
+    margin-right: 20px;
+}
+

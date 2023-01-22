@@ -1,0 +1,5 @@
+.color-container{
+    padding: 60px;
+    background-color: var(--light-blue);
+    border-radius: 30px;
+}

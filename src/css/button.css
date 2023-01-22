@@ -1,0 +1,19 @@
+.button{
+    width: 250px;
+    height: 50px;
+    font-family:'Sofia Sans';
+    font-weight: 600;
+    border-radius: 35px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.action-btn{
+    border: none;
+    color:white;
+    background-color: #518BFA;
+}
+.action-btn-outline{
+    border: 1px solid var(--blue);
+    color:var(--blue);
+    background-color: transparent;
+}
