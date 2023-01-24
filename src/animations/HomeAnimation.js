@@ -19,6 +19,8 @@ export function changeScale(target,scale){
 
 // all home animations
 export function activateHomeAnimations(){
+    //navbar
+    gsap.fromTo('.logo',{y:-50,opacity:0},{y:0,opacity:1,duration:1})
      // timeline animation
      const tl = gsap.timeline({duration:1})
      tl.fromTo('#section-1-img',{y:150,opacity:0},{y:0,opacity:1})
