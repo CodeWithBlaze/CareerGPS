@@ -1,15 +1,11 @@
-import { Route,Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import { useState } from 'react';
+import AppNavigator from './AppNavigator';
+import Register from './Register'
 
 function App() {
+  const [user,setUser] = useState(false)
   return (
-    <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/register" element={<Signup/>}/>
-    </Routes>
+    user?<AppNavigator/>:<Register/>
   )
 }
 
