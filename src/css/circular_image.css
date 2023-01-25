@@ -1,0 +1,8 @@
+.circular-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #EFEEFC;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border: 5px solid #9289FF;
+}

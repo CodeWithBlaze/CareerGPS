@@ -1,0 +1,38 @@
+.main-app-container{
+    display: flex;
+    width: 100%;
+}
+.dashboard-profile{
+    width: 25%;
+    padding:30px;
+    border:1px solid #E4E4E4;
+    border-bottom: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dashboard-profile-name{
+    margin-top: 25px;
+}
+.dashboard-profile-email{
+    margin-top: 5px;
+    color:#6C63FF;
+    margin-bottom:15px;
+}
+.dashboard-task{
+    width: 25%;
+    padding:30px;
+    border:1px solid #E4E4E4;
+    border-bottom: none;
+}
+.dashboard-task-details{
+    width: 50%;
+    padding:30px;
+    border:1px solid #E4E4E4;
+    border-bottom: none;
+}
+.dashboard-profile-btn{
+    margin-bottom: 30px;
+    width: 150px;
+    height:40px;
+}

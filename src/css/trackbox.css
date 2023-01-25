@@ -1,0 +1,28 @@
+.trackbox-container{
+    width: 100%;
+    max-width: 450px;
+    height:fit-content;
+    background-color: #E3E0FF;
+    padding: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+.trackbox-heading{
+    color:#9289FF;
+}
+.progress{
+    width: 100%;
+    height: 20px;
+    background-color:white;
+    border: none;
+    border-radius: 30px;
+    margin-top: 15px;
+
+}
+.progress::-moz-progress-bar{
+    background-color:#9289FF;
+}
+.progress::-webkit-progress-bar{
+    background-color:#9289FF;
+}

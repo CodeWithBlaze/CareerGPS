@@ -3,7 +3,7 @@ import AppNavigator from './AppNavigator';
 import Register from './Register'
 
 function App() {
-  const [user,setUser] = useState(false)
+  const [user,setUser] = useState(true)
   return (
     user?<AppNavigator/>:<Register/>
   )
