@@ -1,0 +1,46 @@
+.signup-container{
+    display: flex;
+    margin-top: 30px !important;
+    padding-left: 60px;
+    padding-right: 60px;
+    justify-content: space-around;
+    align-items: center;
+}
+.signup-image{
+    width:40%;
+}
+.signup-form-container{
+    width:400px;
+}
+.signup-form-container h1{
+    font-weight: 800;
+}
+.signup-form-container h3{
+    margin-top: 5px;
+    margin-left: 5px;
+    color:var(--text-grey);
+}
+.user-name-container{
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+.text-based-input{
+    color:#999999;
+    margin-top: 15px;
+}
+.text-based-input-select{
+    width: 100px;
+    height:50px;
+    font-family: 'Roboto Slab';
+    padding-left: 10px;
+    border:2px solid #D9D9D9;
+    background-color: #FBFAFA;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+.text-based-input-select option{
+    font-family: 'Roboto Slab';
+}

@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar';
 import { believed_emoji, confuse_emoji, dizzy_emoji,taskUrl } from '../config/constant';
 import { color_container } from '../css/custom';
 import '../css/page/home.css'
+import '../css/page/common.css'
 import { faLightbulb,faFile,faHandSpock,faLayerGroup } from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap';
 import { activateHomeAnimations, changeBackgroundColor, changeOutineColor, changeScale, changeTextColor} from '../animations/HomeAnimation';
