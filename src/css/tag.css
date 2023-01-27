@@ -1,0 +1,15 @@
+.tag{
+    min-width:80px;
+    width: fit-content;
+    max-width: 250px;
+    height: fit-content;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:10px;
+    color:white;
+    border-radius: 30px;
+    margin-right:5px;
+    margin-left: 5px;
+}

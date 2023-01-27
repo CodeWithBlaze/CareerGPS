@@ -2,6 +2,7 @@ import React from 'react';
 import Button from './components/Button';
 import CircularImage from './components/CircularImage';
 import Navbar from './components/Navbar';
+import TaskCategory from './components/TaskCategory';
 import TrackBox from './components/TrackBox';
 import './css/main_app.css';
 function AppNavigator(props) {
@@ -18,7 +19,7 @@ function AppNavigator(props) {
             <TrackBox text={'Semester Progress: On Track'} progress={52}/>
           </div>
           <div className='dashboard-task'>
-            Task
+            <TaskCategory heading={'Learn a Language'} subheading={'Semester 1'}/>
           </div>
           <div className='dashboard-task-details'>
             Task details
