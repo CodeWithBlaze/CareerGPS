@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { logOut } from '../backend/auth';
+import { Routes } from '../config/constant';
+import UserContext from '../context/UserContext';
 import '../css/nav.css'
 import Button from './Button';
 import Logo from './Logo';
 const ACTIVE_CLASS = 'link-active';
-const NAV_ITEMS = ['Home','About','Contact','Join us']
-function Navbar(props) {
-    const [active,setActive] = useState('Home')
+
+function Navbar({activeMenu='Home'}) {
+    const [active,setActive] = useState(activeMenu)
+    const {user} = useContext(UserContext);
+    const navigate = useNavigate()
     return (
         <div className='navbar'>
-            <Logo/>
+            <Logo onClick={()=>navigate('/')}/>
             <ul className='navbar-menu'>
                 {
-                    NAV_ITEMS.map(item=><li key={item} className={active === item?ACTIVE_CLASS:''} onClick={()=>setActive(item)}>{item}</li>)
+                    Routes.map(item=><li key={item.name} className={active === item.name?ACTIVE_CLASS:''} onClick={()=>{navigate(item.route)}}>{item.name}</li>)
+                }
+                {
+                    user && <li key={'My Journey'} className={active === 'My Journey'?ACTIVE_CLASS:''} onClick={()=>{navigate('/journey')}}>{'My Journey'}</li>
+                }
+                {
+                    user && <li key={'Logout'} onClick={()=>logOut()}>{'Logout'}</li>
                 }
             </ul>
-            <Button title='Get Started'/>
+            {
+                !user && 
+                <Button title='Get Started' onClick={()=>navigate('/register/signup')}/>
+            }
         </div>
     );
 }

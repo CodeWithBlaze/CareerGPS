@@ -4,11 +4,41 @@ import '../css/page/register.css'
 import '../css/page/common.css'
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { signup } from '../backend/auth';
+import { useNavigate } from 'react-router-dom';
 function Signup(props) {
+    //variables
     const [error,setError] = useState('')
+    const navigate = useNavigate()
+    const [userDetails,setUserDetails] = useState({
+        first_name:"",
+        last_name:"",
+        email:"",
+        password:"",
+    })
+    const [loading,setLoading] = useState(false);
+    // function
+    async function postUserData(){
+        try{
+            setLoading(true)
+            await signup(userDetails.email,userDetails.password)
+            navigate('/')
+            // add the rest of user data to database
+            
+        }
+        catch(err){
+            // handle error
+            alert("Error occured")
+            console.log(err)
+        }
+        finally{
+            setLoading(false);
+        }
+        
+    }
     return (
         <>
-        <Navbar/>
+        <Navbar activeMenu='Home'/>
         <div className='container signup-container'>
             <img src='https://res.cloudinary.com/codecafe/image/upload/v1674550046/CareerGPS/18056_m2g0fm.jpg' 
             alt='person with laptop'
@@ -21,21 +51,29 @@ function Signup(props) {
                 <Input
                 placeholder={'First Name'}
                 style={{marginRight:10}}
+                value={userDetails.first_name}
+                onChange={(e)=>setUserDetails({...userDetails,first_name:e.target.value})}
                 />
                 <Input
                 placeholder={'Last Name'}
                 error={error}
                 setError={setError}
+                value={userDetails.last_name}
+                onChange={(e)=>setUserDetails({...userDetails,last_name:e.target.value})}
                 />
                 </div>
                 <div className='email-password-container'>
                 <Input
                     placeholder={'Enter your email'}
                     customClass={'full-width'}
+                    value={userDetails.email}
+                    onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})}
                 />
                 <Input
                     placeholder={'Enter your password'}
                     customClass={'full-width'}
+                    value={userDetails.password}
+                    onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
                 </div>
                 <div className='text-based-input'>
@@ -54,7 +92,11 @@ function Signup(props) {
                         <option>4th</option>
                     </select>
                     year.<br/> 
-                    <Button title='Sign Up' customClass={'flatButton'}/>
+                    <Button 
+                    title='Sign Up' 
+                    loading={loading}
+                    customClass={'flatButton'} 
+                    onClick={()=>postUserData()}/>
                 </div>
             </div>
         </div>

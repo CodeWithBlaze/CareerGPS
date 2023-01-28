@@ -14,18 +14,19 @@ import { faLightbulb,faFile,faHandSpock,faLayerGroup } from '@fortawesome/free-s
 import gsap from 'gsap';
 import { activateHomeAnimations, changeBackgroundColor, changeOutineColor, changeScale, changeTextColor} from '../animations/HomeAnimation';
 import {ScrollTrigger} from 'gsap/all';
+import { useNavigate } from 'react-router-dom';
 //registering scrollTrigger
 gsap.registerPlugin(ScrollTrigger)
 
 function Home(props) {
-    
+    const navigate = useNavigate()
     useLayoutEffect(()=>{
        activateHomeAnimations()
     },[])
     
     return (
         <>
-            <Navbar/>
+            <Navbar activeMenu='Home'/>
             <ColorContainer customStyle={color_container}>
                 <ImgHeading
                 customMainHeadingContainerStyle={{width:'50%'}}
@@ -48,6 +49,7 @@ function Home(props) {
                         customStyle={{width:180,marginRight:15}}
                         onMouseEnter={()=>changeBackgroundColor('#get-started','orange',0.5)}
                         onMouseLeave={()=>changeBackgroundColor('#get-started','#518BFA',0.5)}
+                        onClick={()=>navigate('/register/signup')}
                         />
                         <Button 
                         title='Login Here' 
@@ -55,6 +57,7 @@ function Home(props) {
                         customStyle={{width:180}} 
                         onMouseEnter={()=>changeOutineColor('#login','orange',false,'white',0.5)}
                         onMouseLeave={()=>changeOutineColor('#login','#518BFA',true,'#518BFA',0.5)}
+                        onClick={()=>navigate('/register')}
                         outline/>
                     </div>
                 </ImgHeading>

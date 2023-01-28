@@ -1,6 +1,8 @@
 import React from 'react';
 import '../css/button.css';
-function Button({customStyle,customClass,title="",outline=false,onClick,onMouseEnter,onMouseLeave,id=""}) {
+import { Spinner } from "react-activity";
+import "react-activity/dist/library.css";
+function Button({customStyle,customClass,title="",outline=false,onClick,onMouseEnter,onMouseLeave,id="",loading}) {
     return (
         <button className={'button '+(outline?'action-btn-outline':'action-btn')+` ${customClass}`} 
         id={id}
@@ -8,7 +10,7 @@ function Button({customStyle,customClass,title="",outline=false,onClick,onMouseE
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        >{title}</button>
+        >{loading?<Spinner/>:title}</button>
     );
 }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import '../css/logo.css';
-function Logo({customStyle}) {
+function Logo({customStyle,onClick}) {
     return (
         <>
-        <h1 className='logo' style={customStyle}>CareerGPS</h1>
+        <h1 className='logo' style={customStyle} onClick={onClick}>CareerGPS</h1>
         </>
     );
 }

@@ -4,11 +4,32 @@ import '../css/page/register.css'
 import '../css/page/common.css'
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { login } from '../backend/auth';
+import { useNavigate } from 'react-router-dom';
 function Login(props) {
-    const [error,setError] = useState('')
+    const [loading,setLoading] = useState(false);
+    const navigate = useNavigate()
+    const [userDetails,setUserDetails] = useState({
+        email:"",
+        password:""
+    })
+    async function signInUser(){
+        try{
+            setLoading(true);
+            await login(userDetails.email,userDetails.password)
+            navigate('/')
+        }
+        catch(err){
+            alert("Error")
+            console.log(err);
+        }
+        finally{
+            setLoading(false)
+        }
+    }
     return (
         <>
-        <Navbar/>
+        <Navbar activeMenu='Home'/>
         <div className='container signup-container'>
             <img src='https://res.cloudinary.com/codecafe/image/upload/v1674550046/CareerGPS/18056_m2g0fm.jpg' 
             alt='person with laptop'
@@ -22,13 +43,22 @@ function Login(props) {
                     placeholder={'Enter your email'}
                     customClass={'full-width'}
                     style={{marginTop:15}}
+                    value={userDetails.email}
+                    onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})}
                 />
                 <Input
                     placeholder={'Enter your password'}
                     customClass={'full-width'}
+                    value={userDetails.password}
+                    onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
                 </div>
-                <Button title='Sign Up' customClass={'flatButton'}/>
+                <Button 
+                loading={loading}
+                title='Sign In' 
+                customClass={'flatButton'}
+                onClick={()=>signInUser()}
+                />
             </div>
         </div>
         </>
