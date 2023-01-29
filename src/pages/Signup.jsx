@@ -4,8 +4,8 @@ import '../css/page/register.css'
 import '../css/page/common.css'
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { signup } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
+import { addUsertoDatabase } from '../backend/api';
 function Signup(props) {
     //variables
     const [error,setError] = useState('')
@@ -15,13 +15,17 @@ function Signup(props) {
         last_name:"",
         email:"",
         password:"",
+        course:"BTech",
+        stream:"CSE",
+        semester:"1"
     })
     const [loading,setLoading] = useState(false);
     // function
     async function postUserData(){
         try{
             setLoading(true)
-            await signup(userDetails.email,userDetails.password)
+            const result = await addUsertoDatabase(userDetails);
+            console.log(result)
             navigate('/')
             // add the rest of user data to database
             
@@ -78,20 +82,20 @@ function Signup(props) {
                 </div>
                 <div className='text-based-input'>
                     I am a 
-                    <select className='text-based-input-select'>
+                    <select className='text-based-input-select' value={userDetails.course} onChange={(e)=>setUserDetails({...userDetails,course:e.target.value})}>
                         <option>BTech</option>
                     </select>
-                    <select className='text-based-input-select'>
+                    <select className='text-based-input-select' value={userDetails.stream} onChange={(e)=>setUserDetails({...userDetails,stream:e.target.value})}>
                         <option>CSE</option>
                     </select>
                     <label>student currently in</label> 
-                    <select className='text-based-input-select'>
-                        <option>1st</option>
-                        <option>2nd</option>
-                        <option>3rd</option>
-                        <option>4th</option>
+                    <select className='text-based-input-select' value={userDetails.semester} onChange={(e)=>setUserDetails({...userDetails,semester:e.target.value})}>
+                        <option value={"1"}>1st</option>
+                        <option  value={"2"}>2nd</option>
+                        <option value={"3"}>3rd</option>
+                        <option value={"4"}>4th</option>
                     </select>
-                    year.<br/> 
+                    semester.<br/> 
                     <Button 
                     title='Sign Up' 
                     loading={loading}
