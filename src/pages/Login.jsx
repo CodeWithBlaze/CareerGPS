@@ -6,6 +6,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { login } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
+import LinkText from '../components/LinkText';
 function Login(props) {
     const [loading,setLoading] = useState(false);
     const navigate = useNavigate()
@@ -52,12 +53,21 @@ function Login(props) {
                     value={userDetails.password}
                     onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
+                <LinkText
+                style={{textAlign:'right',fontSize:14,marginRight:10}}
+                text={<p style={{fontWeight:600,color:'#6C63FF',cursor:'pointer'}}>Forgot Your Password?</p>}
+                onClick={()=>navigate('/register/password')}
+                />
                 </div>
                 <Button 
                 loading={loading}
                 title='Sign In' 
                 customClass={'flatButton'}
                 onClick={()=>signInUser()}
+                />
+                <LinkText
+                text={<p>Do not have a account? <label style={{fontWeight:600,color:'#6C63FF',cursor:'pointer'}}>Create one here</label></p>}
+                onClick={()=>navigate('/register/signup')}
                 />
             </div>
         </div>

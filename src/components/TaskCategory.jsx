@@ -1,31 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getTaskBySemesterAndGoal } from '../backend/api';
 import '../css/taskcategory.css';
-import {faCircleCheck as checkFilled} from '@fortawesome/free-solid-svg-icons'
-import {faCircleCheck as checkOutline} from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Tag from './Tag';
-function TaskCategory({heading,subheading}) {
+import SubTask from './SubTask';
+
+function TaskCategory({heading,subheading,goal_id,semester_id}) {
+    const [visible,setVisible] = useState(false)
+    const [data,setData] = useState([])
+    function onVisible(){
+        if(data.length === 0){
+            console.log("Request send")
+            getTaskBySemesterAndGoal(semester_id,goal_id)
+            .then(data=>{
+                setData(data)
+            })
+            .catch(err=>console.log(err))
+        }
+        setVisible(!visible)
+    }
     return (
         <>
-        <div className='task-category'>
+        <div className='task-category' onClick={()=>onVisible()}>
             <h4>{subheading}</h4>
-            <h2>{heading}</h2>
+            <h3>{heading}</h3>
         </div>
-        <div className='task'>
-            <div className='task-and-icon'>
-                <FontAwesomeIcon icon={checkOutline} color={'#6C63FF'} size={'xl'}/>
-                <div>
-                    <h4>Choose a programming language</h4>
-                    <h6>Date : 24th Oct 2022</h6>
-                    <div className='tags'>
-                        <Tag tagTitle={'Easy'}/>
-                        <Tag tagTitle={'High'}/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {
+            visible && data.map(task=><SubTask key={task._id} task_title={task.task_name}/>)
+        }
         </>
-        
     );
 }
 

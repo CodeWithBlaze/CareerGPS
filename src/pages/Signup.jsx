@@ -6,6 +6,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { addUsertoDatabase } from '../backend/api';
+import LinkText from '../components/LinkText';
 function Signup(props) {
     //variables
     const [error,setError] = useState('')
@@ -101,6 +102,10 @@ function Signup(props) {
                     loading={loading}
                     customClass={'flatButton'} 
                     onClick={()=>postUserData()}/>
+                    <LinkText 
+                    text={<p>Already have a account? <label style={{fontWeight:600,color:'#6C63FF',cursor:'pointer'}}>Sign In here</label></p>}
+                    onClick={()=>navigate('/register')}
+                    />
                 </div>
             </div>
         </div>
