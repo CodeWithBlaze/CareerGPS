@@ -3,7 +3,7 @@ import { getTaskBySemesterAndGoal } from '../backend/api';
 import '../css/taskcategory.css';
 import SubTask from './SubTask';
 
-function TaskCategory({heading,subheading,goal_id,semester_id}) {
+function TaskCategory({heading,subheading,goal_id,semester_id,setTask,currentTask,activeTask}) {
     const [visible,setVisible] = useState(false)
     const [data,setData] = useState([])
     function onVisible(){
@@ -24,7 +24,15 @@ function TaskCategory({heading,subheading,goal_id,semester_id}) {
             <h3>{heading}</h3>
         </div>
         {
-            visible && data.map(task=><SubTask key={task._id} task_title={task.task_name}/>)
+            visible && data.map(task=>
+            <SubTask key={task._id} 
+            task_id={task._id} 
+            task_title={task.task_name} 
+            setTask={setTask} 
+            currentTask={currentTask} 
+            activeTask={activeTask} 
+            task_rank={task.rank}
+            />)
         }
         </>
     );

@@ -7,19 +7,26 @@ import Navbar from '../components/Navbar';
 import TaskCategory from '../components/TaskCategory';
 import TrackBox from '../components/TrackBox';
 import UserContext from '../context/UserContext';
+import Confetti from 'react-confetti'
 import '../css/main_app.css';
 function Journey(props) {
     const [profile,setProfile] = useState(null)
     const [goals,setGoals] = useState([])
-    const {user} = useContext(UserContext);
+    const {user,setUser} = useContext(UserContext);
+    const [currentTask,setCurrentTask] = useState(null); 
+    const [celebrate,setCelebrate] = useState(false);
+    const [activeTask,setActiveTask] = useState([])
     useEffect(()=>{
       getProfile()
       .then(data=>{
-        setProfile(data)
+        setProfile(data.user)
+        setActiveTask(data.activeTask)
         // fetch task
-        getSemestersByCourse(data.course,data.stream)
+        getSemestersByCourse(data.user.course,data.user.stream)
         .then(goals=>setGoals([...goals]))
         .catch(err=>console.log(err))
+        setUser({...user,profileData:data.user,activeTaskData:data.activeTask})
+        
       })
       .catch(err=>console.log(err))
     },[])
@@ -39,13 +46,42 @@ function Journey(props) {
           </div>
           <div className='dashboard-task'>
             {
-              goals.length > 0 && goals.map(goal=><TaskCategory key={goal._id} heading={goal.goal} subheading={goal.name} goal_id={goal._id} semester_id={goal.semester_id}/>)
+              goals.length > 0 && activeTask.length > 0 &&
+              goals.map(goal=>
+              <TaskCategory
+              activeTask={activeTask}
+              setActiveTask={setActiveTask} 
+              key={goal._id} 
+              heading={goal.goal} 
+              subheading={goal.name} 
+              goal_id={goal._id} 
+              semester_id={goal.semester_id} 
+              setTask={setCurrentTask} 
+              currentTask={currentTask}/>)
             }
           </div>
           <div className='dashboard-task-details'>
-            <CustomHTML content={"This string contains <b>HTML</b> and will safely be rendered!"}/>
+            {!currentTask && <p className="no-details-heading">Click on a task to show the Task details</p>}
+            { currentTask && <CustomHTML 
+            setActiveTask={setActiveTask}
+            content={"This string contains <b>HTML</b> and will safely be rendered!"} 
+            task_id={currentTask}
+            setCelebrate={setCelebrate}
+            />}
           </div>
         </div>
+        {
+          celebrate && <div className='celebration'>
+          <Confetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            onConfettiComplete={()=>setCelebrate(false)}
+            recycle={false}
+            numberOfPieces={1000}
+            initialVelocityY={10}
+          />
+          </div>
+        }
         </>
     );
 }
