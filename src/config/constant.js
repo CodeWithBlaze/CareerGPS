@@ -24,3 +24,39 @@ export const Routes = [
     },
 ]
 // ['Home','About','Contact','Join us']
+
+export const styles_css = `
+.tags-container{
+    margin-top: 30px;
+}
+.common-style{
+    display:block;
+    margin-top: 10px;
+}
+#tag-selector{
+    width: 150px;
+    height:40px;
+}
+.controls{
+    margin-top: 30px;
+}
+#text-type-style-control{
+    display: block;
+}
+.custom-css-styles p{
+    margin-right: 5px;
+    width: 30%;
+}
+/* image */
+
+.image-default{
+    width: 100%;
+    height: auto;
+}
+
+/* link */
+.embed-default{
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+`
