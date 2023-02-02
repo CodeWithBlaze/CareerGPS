@@ -55,10 +55,16 @@ async function markTaskAsComplete(task_id){
     const result = await API.put('/user/task/complete',{task_id})
     return result.data
 }
+// get task details
+async function getTaskDetails(task_id){
+    const result = await API.get(`/task/details/content/${task_id}`)
+    return result.data
+}
 export {
     addUsertoDatabase,
     getProfile,
     getSemestersByCourse,
     getTaskBySemesterAndGoal,
-    markTaskAsComplete
+    markTaskAsComplete,
+    getTaskDetails
 }
