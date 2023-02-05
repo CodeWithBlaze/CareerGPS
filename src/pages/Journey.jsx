@@ -10,6 +10,7 @@ import UserContext from '../context/UserContext';
 import Confetti from 'react-confetti'
 import '../css/main_app.css';
 import { Spinner } from 'react-activity';
+import { useNavigate } from 'react-router-dom';
 
 function Journey(props) {
     const [profile,setProfile] = useState(null)
@@ -19,6 +20,7 @@ function Journey(props) {
     const [currentTaskContent,setCurrentTaskContent] = useState(null); 
     const [celebrate,setCelebrate] = useState(false);
     const [activeTask,setActiveTask] = useState([])
+    const navigate = useNavigate()    
     useEffect(()=>{
       getProfile()
       .then(data=>{
@@ -54,7 +56,9 @@ function Journey(props) {
             <CircularImage img={'https://bharatflux.com/wp-content/uploads/2020/04/IMG-20200404-WA0003.jpg'}/>
             <h3 className='dashboard-profile-name'>{profile.full_name}</h3>
             <label className='dashboard-profile-email'>{user.email}</label>
-            <Button title='View Profile' customClass={'dashboard-profile-btn'}/>
+            <Button title='View Profile' customClass={'dashboard-profile-btn'}
+            onClick={()=>navigate('/profile')}
+            />
             <TrackBox text={'Topic Progress: On Track'} progress={32}/>
             <TrackBox text={'Semester Progress: On Track'} progress={52}/>
             </>}

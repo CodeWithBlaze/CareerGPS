@@ -1,0 +1,35 @@
+.resume-container{
+    width: 60%;
+    height:fit-content;
+    background-color:white;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding:40px;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: row;
+}
+.resume-left-content{
+    width: 60%;
+    padding-right: 15px;
+}
+.resume-left-content h1{
+    font-size: 45px;
+}
+.resume-role{
+    font-size: 15px;
+    margin-top: 5px;
+}
+.resume-category-container{
+    margin-top: 60px;
+}
+.resume-right-content{
+    width: 40%;
+}
+.resume-category-container-right{
+    margin-top: 70px;
+}
+.resume-email{
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+}

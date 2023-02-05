@@ -23,6 +23,13 @@ export const Routes = [
         route:"/join"
     },
 ]
+export const RESUME_CATEGORY = {
+    EDUCATION:'EDUCATION',
+    EXPERIENCE:'EXPERIENCE',
+    SKILL:'SKILL',
+    PROJECT:'PROJECT',
+    ACHIEVEMENT:'ACHIEVEMENT'
+}
 // ['Home','About','Contact','Join us']
 
 export const styles_css = `

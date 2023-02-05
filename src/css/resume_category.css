@@ -1,0 +1,27 @@
+.resume-category{
+    margin-bottom: 25px;
+}
+.company-role{
+    display: flex;
+}
+.company-role h3{
+    margin-right: 15px;
+}
+.company-role p{
+    font-style: italic;
+}
+.resume-category-date{
+    margin-top: 5px;
+    font-size: 12px;
+}
+.resume-category-description{
+    margin-top:10px;
+    font-size: 13px;
+}
+.resume-category-title{
+    font-size: 15px;
+    font-weight: bold;
+}
+.resume-category-subtitle{
+    font-size: 13px;
+}
