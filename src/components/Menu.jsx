@@ -7,7 +7,7 @@ function Menu({MENU_ITEMS}) {
         <div className='menu-container'>
             <ul className='menu-items-container'>
                 {MENU_ITEMS.map(item=>
-                <li
+                <li key={item.value}
                 className={item.value === active.item ? 'menu-active':''} 
                 onClick={()=>setActive({item:item.value,component:item.component})}
                 >

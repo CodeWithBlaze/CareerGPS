@@ -34,7 +34,7 @@ function Journey(props) {
         
       })
       .catch(err=>console.log(err))
-    },[])
+    },[user])
     useEffect(()=>{
       if(currentTask){
         setCurrentTaskContent(null);
@@ -57,7 +57,7 @@ function Journey(props) {
             <h3 className='dashboard-profile-name'>{profile.full_name}</h3>
             <label className='dashboard-profile-email'>{user.email}</label>
             <Button title='View Profile' customClass={'dashboard-profile-btn'}
-            onClick={()=>navigate('/profile')}
+            onClick={()=>navigate('/profile',{state:{profile}})}
             />
             <TrackBox text={'Topic Progress: On Track'} progress={32}/>
             <TrackBox text={'Semester Progress: On Track'} progress={52}/>
