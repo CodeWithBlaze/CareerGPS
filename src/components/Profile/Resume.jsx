@@ -1,7 +1,7 @@
-import { RESUME_CATEGORY } from '../config/constant';
-import '../css/resume.css';
-import ResumeCategory from './ResumeCategory';
-import ResumeHeadingText from './ResumeHeadingText';
+import { RESUME_CATEGORY } from '../../config/constant';
+import '../../css/resume.css';
+import ResumeCategory from '../ResumeCategory';
+import ResumeHeadingText from '../ResumeHeadingText';
 function Resume(){
     return (
         <div className="resume-container">
@@ -13,10 +13,11 @@ function Resume(){
                         <ResumeCategory type={RESUME_CATEGORY.EXPERIENCE}/>
                         <ResumeCategory type={RESUME_CATEGORY.EXPERIENCE}/>
                         <ResumeCategory type={RESUME_CATEGORY.EXPERIENCE}/>
-                    <ResumeHeadingText text={'PROJECTS'}/>
-                        <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
-                        <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
-                        <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
+                    <ResumeHeadingText text={'EDUCATION'}/>
+                        <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
+                        <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
+                        <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
+                    
                     
                 </div>
             </div>
@@ -28,11 +29,11 @@ function Resume(){
                 </address>
                 <p className='resume-email'>no_reply@example.com</p>
                 <div className='resume-category-container-right'>
+                        <ResumeHeadingText text={'PROJECTS'}/>
+                            <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
+                            <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
+                            <ResumeCategory type={RESUME_CATEGORY.PROJECT}/>
                         
-                        <ResumeHeadingText text={'EDUCATION'}/>
-                            <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
-                            <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
-                            <ResumeCategory type={RESUME_CATEGORY.EDUCATION}/>
                         <ResumeHeadingText text={'SKILLS'}/>
                             <ResumeCategory type={RESUME_CATEGORY.SKILL}/>
                             <ResumeCategory type={RESUME_CATEGORY.SKILL}/>

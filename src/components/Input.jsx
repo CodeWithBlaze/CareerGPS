@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/input.css';
-function Input({value,placeholder,onChange,customClass,style,error,setError,warning,setWarning}) {
+function Input({value,type,placeholder,onChange,customClass,style,error,setError,warning,setWarning}) {
     function resetBox(){
         if(setError)
             setError('')
@@ -13,6 +13,7 @@ function Input({value,placeholder,onChange,customClass,style,error,setError,warn
         onFocus={()=>resetBox()} 
         style={style}
         value={value} 
+        type={type}
         onChange={onChange}
         placeholder={placeholder} 
         className={`input-box ${customClass} ${error?'error':''} ${warning?'warning':''}`}/>

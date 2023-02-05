@@ -24,11 +24,18 @@ export const Routes = [
     },
 ]
 export const RESUME_CATEGORY = {
-    EDUCATION:'EDUCATION',
-    EXPERIENCE:'EXPERIENCE',
-    SKILL:'SKILL',
-    PROJECT:'PROJECT',
-    ACHIEVEMENT:'ACHIEVEMENT'
+    EDUCATION:'education',
+    EXPERIENCE:'experience',
+    SKILL:'skill',
+    PROJECT:'project',
+    ACHIEVEMENT:'achievement'
+}
+export const PLACEHOLDER_TEXT = {
+    experience:{company:'Company',role:'Role'},
+    project:{company:'Project Name',role:'Stack used'},
+    education:{company:'School or University Name',role:'Degree'},
+    skill:{company:'Skill'},
+    achievement:{company:'Achievement'},
 }
 // ['Home','About','Contact','Join us']
 

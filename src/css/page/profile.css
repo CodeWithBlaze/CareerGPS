@@ -1,3 +1,18 @@
-.resume-and-profile-container{
-    padding: 30px;
+.profile-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+}
+.profile-page-other-details{
+    width: 90%;
+    height: fit-content;
+    padding:30px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.resume-editor-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }
