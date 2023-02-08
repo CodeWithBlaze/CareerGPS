@@ -60,11 +60,23 @@ async function getTaskDetails(task_id){
     const result = await API.get(`/task/details/content/${task_id}`)
     return result.data
 }
+//add user resume
+async function addResume(resume){
+    const result = await API.post('/user/add/resume',{resume})
+    return result.data
+}
+//get user resume
+async function getResume(){
+    const resume = await API.get('/user/resume')
+    return resume.data
+}
 export {
     addUsertoDatabase,
     getProfile,
     getSemestersByCourse,
     getTaskBySemesterAndGoal,
     markTaskAsComplete,
-    getTaskDetails
+    getTaskDetails,
+    addResume,
+    getResume
 }

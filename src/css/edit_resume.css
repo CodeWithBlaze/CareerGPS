@@ -9,3 +9,11 @@
     height: fit-content;
     background-color: white;
 }
+.resume-warning{
+    background-color:#F67676;
+    border: 2px solid #9F1D35;
+    color: #9F1D35;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding:15px;
+}

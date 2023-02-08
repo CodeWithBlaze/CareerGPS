@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PLACEHOLDER_TEXT } from '../../config/constant';
 import '../../css/edit_resume.css';
 import Button from '../Button';
 import Input from '../Input';
+import { faCloud } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const OPTIONS = [
     {name:'Experiences',value:'experience'},
     {name:'Projects',value:'project'},
@@ -32,6 +34,7 @@ function EditResume({
         date:'',
         description:''
     })
+    
     function updateBasicDetails(){
         setBasicDetails({name:resumeDetails.name,small_desc:resumeDetails.small_desc,address:resumeDetails.address,email:resumeDetails.email})
     }
@@ -88,6 +91,11 @@ function EditResume({
     }
     return (
         <div style={{width:'30%'}}>
+            <div className='resume-warning'>
+                <p>Please remember to save the resume after making changes by clicking 
+                    <FontAwesomeIcon icon={faCloud} color={'#9F1D35'} size={'sm'} style={{marginLeft:5}}/> button
+                </p>
+            </div>
             <div className='edit-resume-container'>
                 <Input
                         placeholder={`Enter your Name`}

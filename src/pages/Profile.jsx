@@ -1,5 +1,6 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
+import { getResume } from '../backend/api';
 import Menu from '../components/Menu';
 import Navbar from '../components/Navbar';
 import Accounts from '../components/Profile/Accounts';
@@ -12,6 +13,19 @@ import '../css/page/profile.css';
   
 
 function ResumeEditor({profile}){
+    useEffect(()=>{
+        getResume()
+        .then(res=>{
+            const resume = res.resume;
+            setExperiences(resume.experiences)
+            setEducations(resume.educations)
+            setProjects(resume.projects)
+            setSkills(resume.skills)
+            setAchievements(resume.achievements)
+            setBasicDetails(resume.basicDetails)
+        })
+        .catch(err=>console.log(err))
+    },[profile])
     const [experiences,setExperiences] = useState([])
     const [educations,setEducations] = useState([])
     const [projects,setProjects] = useState([])
