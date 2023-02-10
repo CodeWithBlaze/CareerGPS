@@ -18,7 +18,7 @@ function App() {
         setUser(false)
       
     })
-  })
+  },[])
   return (
     <UserContext.Provider value={{user,setUser}}>
       <Routes>

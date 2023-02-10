@@ -70,6 +70,26 @@ async function getResume(){
     const resume = await API.get('/user/resume')
     return resume.data
 }
+async function updateUserProfilePhoto(photo){
+    const formData = new FormData();
+    formData.append('profileImage',photo);
+    const result = await API.put('/user/image',formData,{
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        },
+    })
+    return result.data
+}
+async function updateUserProfile(details){
+    const document = {
+        full_name:details.name,
+        course:details.course,
+        stream:details.stream,
+        semester:details.semester
+    }
+    const result = await API.put('/user',document)
+    return result.data
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -78,5 +98,7 @@ export {
     markTaskAsComplete,
     getTaskDetails,
     addResume,
-    getResume
+    getResume,
+    updateUserProfilePhoto,
+    updateUserProfile
 }

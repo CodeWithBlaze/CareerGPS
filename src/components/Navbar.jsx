@@ -23,6 +23,10 @@ function Navbar({activeMenu='Home'}) {
                     user && <li key={'My Journey'} className={active === 'My Journey'?ACTIVE_CLASS:''} onClick={()=>{navigate('/journey')}}>{'My Journey'}</li>
                 }
                 {
+                    user && user.profileData && user.profileData.role && user.profileData.role === 'admin' && <li key={'Admin Panel'} className={active === 'Admin Panel'?ACTIVE_CLASS:''} onClick={()=>{navigate('/admin')}}>{'Admin Panel'}</li>
+                }
+                
+                {
                     user && <li key={'Logout'} onClick={()=>logOut()}>{'Logout'}</li>
                 }
             </ul>
