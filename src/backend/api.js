@@ -90,6 +90,23 @@ async function updateUserProfile(details){
     const result = await API.put('/user',document)
     return result.data
 }
+async function getCategories(){
+    const result = await API.get('/category')
+    return result.data
+}
+// admin api's
+async function addCategory(category){
+    //category must be course stream object
+    const result = await API.post('/category',category)
+    return result.data
+}
+async function updateCategory(id,course,stream){
+    const result = await API.put('/category',{id,course,stream})
+    return result.data
+}
+async function deleteCategory(id){
+    await API.delete(`/category/${id}`)
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -100,5 +117,10 @@ export {
     addResume,
     getResume,
     updateUserProfilePhoto,
-    updateUserProfile
+    updateUserProfile,
+    getCategories,
+    //admin exports
+    addCategory,
+    updateCategory,
+    deleteCategory
 }
