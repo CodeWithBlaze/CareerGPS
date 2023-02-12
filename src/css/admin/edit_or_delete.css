@@ -1,0 +1,22 @@
+.edit-delete-container{
+    display: flex;
+    padding:10px;
+    border-bottom: 2px solid whitesmoke;
+    cursor: pointer;
+}
+.edit-delete-container:hover{
+    background-color:#6C63FF;
+    color:white;
+}
+.edit-delete-text{
+    width: 70%;
+    height: fit-content;
+    font-size: 15px;
+    
+}
+.edit-delete-menu{
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+
+}
