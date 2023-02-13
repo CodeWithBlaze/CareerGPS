@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { addASemester, deleteASemester, getCategories, getSemestersByCode, updateASemesterName } from '../../backend/api';
 import '../../css/admin/category.css'
+import { findAndRemove } from '../../helpers';
 import Button from '../Button';
 import Input from '../Input';
 import EditOrDelete from './EditOrDelete';
@@ -7,108 +9,96 @@ import Form from './Form';
 
 function SemesterForm(props) {
     const [semester,setSemester] = useState('')
-    const [goal,setGoal] = useState('')
-    const [goalsList,setGoalsList] = useState([])
-    const [task,setTask] = useState('')
-    const [taskList,setTaskList] = useState([])
-    function addGoal(){
-        setGoalsList([...goalsList,goal])
+    const [categories,setCategories] = useState([])
+    const [selectedCategory,setSelectedCategory] = useState('')
+    const [semesterList,setSemesterList] = useState([])
+    const [loading,setLoading] = useState(false)
+    const [update,setUpdate] = useState(null)
+    async function addSemesterToDatabase(){
+        setLoading(true)
+        const new_added_semester = await addASemester(selectedCategory,semester)
+        setSemesterList([...new_added_semester.semesters])
+        setLoading(false)
     }
-    function submitGoal(){
-        console.log(goalsList)
+    function setSemesterForUpdate(semester){
+        setUpdate(semester._id)
+        setSemester(semester.name)
     }
-    function addTask(){
-        setTaskList([...taskList,task])
+    async function updateSemester(){
+        setLoading(true)
+        const updated_semester_list = await updateASemesterName(semester,update);
+        setSemesterList([...updated_semester_list.semesters])    
+        setLoading(false)
+        setUpdate(false);
     }
-    function submitTask(){
-        console.log(taskList)
+    async function deleteSemester(semester){
+        deleteASemester(semester._id)
+        .then(()=>{
+            const updatedList = findAndRemove('_id',semester._id,semesterList)
+            setSemesterList(updatedList)
+        })
+        .catch(err=>console.log(err))
     }
+    useEffect(()=>{
+        getCategories()
+        .then(res=>setCategories(res))
+        .catch(err=>console.log(err))
+    },[])
+    useEffect(()=>{
+        if(selectedCategory)
+            getSemestersByCode(selectedCategory)
+            .then(res=>setSemesterList([...res.semesters]))
+            .catch(err=>console.log(err))
+    },[selectedCategory])
+
     return (
         <div className='admin-category'>
             <Form>
-                <select className='text-based-input-select admin-select'>
-                    <option>Choose a Course</option>
-                    <option>BTECHCSE</option>
-                </select>
                 <div className='admin-item-container'>
-                    <EditOrDelete/>
+                    {
+                        semesterList.map(semester=>
+                        <EditOrDelete 
+                        key={semester._id} 
+                        content={semester.name}
+                        onEdit={()=>setSemesterForUpdate(semester)}
+                        onDelete={()=>deleteSemester(semester)}
+                        />)
+                    }
                 </div>
+            </Form>
+            <Form>
+                <select className='text-based-input-select admin-select' onChange={(e)=>setSelectedCategory(e.target.value)}>
+                    <option value={''}>Choose a Course</option>
+                    {
+                        categories.map(category=><option key={category._id} value={category.course_stream}>{category.course_stream}</option>)
+                    }
+                </select>
+                
                 <Input
                 placeholder={"Enter a semester name"}
                 customClass={'full-width'}
                 value={semester}
                 onChange={(e)=>setSemester(e.target.value)}
                 />
-                <Button
-                title='Add Semester'
-                customClass={'flatButton'}
-                />
+                {
+                    update?
+                    <Button
+                    title='Update Semester'
+                    customClass={'flatButton'}
+                    loading={loading}
+                    onClick={updateSemester}
+                    />
+                    :
+                    <Button
+                    title='Add Semester to Database'
+                    customClass={'flatButton'}
+                    loading={loading}
+                    onClick={addSemesterToDatabase}
+                    />
+                }
             </Form>
-            <Form>
-                <select className='text-based-input-select admin-select'>
-                    <option>Choose a Semester</option>
-                    <option>Semester 1</option>
-                </select>
-                <div className='admin-item-container'>
-                    <EditOrDelete/>
-                </div>
-                <Input
-                placeholder={"Enter a Goal name"}
-                customClass={'full-width'}
-                value={goal}
-                onChange={(e)=>setGoal(e.target.value)}
-                />
-                <div className='admin-item-container'>
-                    {goalsList.map(goal=><EditOrDelete key={goal} title={goal}/>)}
-                </div>
-                <Button
-                title='Add Goal'
-                customClass={'flatButton'}
-                onClick={addGoal}
-                />
-                <Button
-                title='Submit'
-                customClass={'flatButton'}
-                onClick={submitGoal}
-                />
-            </Form>
-            <Form>
-                <select className='text-based-input-select admin-select'>
-                    <option>Choose a Course</option>
-                    <option>BTECHCSE</option>
-                </select>
-                
-                <select className='text-based-input-select admin-select'>
-                    <option>Choose a Semester</option>
-                    <option>Semester 1</option>
-                </select>
-                <select className='text-based-input-select admin-select'>
-                    <option>Choose a Goal</option>
-                    <option>Goal 1</option>
-                </select>
-                <div className='admin-item-container'>
-                    <EditOrDelete/>
-                </div>
-                <Input
-                placeholder={"Enter task title"}
-                customClass={'full-width'}
-                value={task}
-                onChange={(e)=>setTask(e.target.value)}
-                />
-                <div className='admin-item-container'>
-                    {taskList.map(task=><EditOrDelete key={task} task={task}/>)}
-                </div>
-                <Button
-                title='Add this task'
-                customClass={'flatButton'}
-                onClick={addTask}
-                />
-                <Button
-                title='Submit'
-                customClass={'flatButton'}
-                onClick={submitTask}
-                />
-            </Form>
+            
+            
         </div>
     );
 }

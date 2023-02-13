@@ -107,6 +107,21 @@ async function updateCategory(id,course,stream){
 async function deleteCategory(id){
     await API.delete(`/category/${id}`)
 }
+async function getSemestersByCode(course_stream){
+    const result = await API.get(`/category/semester/code/${course_stream}`)
+    return result.data
+}
+async function addASemester(code,semester_name){
+    const result = await API.post('/category/semester',{code,new_semester:semester_name})
+    return result.data
+}
+async function updateASemesterName(new_name,semester_id){
+    const result = await API.put('/category/semester',{semester_id,updated_name:new_name})
+    return result.data
+}
+async function deleteASemester(semester_id){
+    await API.delete(`/category/semester/${semester_id}`)
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -122,5 +137,9 @@ export {
     //admin exports
     addCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getSemestersByCode,
+    addASemester,
+    updateASemesterName,
+    deleteASemester
 }

@@ -57,50 +57,53 @@ function CategoryForm(props) {
     },[])
     return (
         <div className='admin-category'>
-        <Form>
-            <div className='admin-item-container'>
-                {
-                    loadingCategory && <Spinner/>
+            <Form>
+                <div className='admin-item-container'>
+                    {
+                        loadingCategory && <Spinner/>
+                    }
+                    {
+                        !loadingCategory && categoryList.map(category=>
+                        <EditOrDelete 
+                        key={category._id} 
+                        content={category.course_stream} 
+                        onEdit={()=>setCategoryUpdate(category)}
+                        onDelete={()=>removeCategory(category._id)}
+                        />)
+                    }
+                </div>
+            </Form>
+            <Form>
+                
+                <Input
+                placeholder={"Enter a course name"} 
+                customClass={'full-width'}
+                value={category.course}
+                onChange={(e)=>setCategory({...category,course:e.target.value})}
+                />
+                <Input
+                placeholder={"Enter a stream name"} 
+                customClass={'full-width'}
+                value={category.stream}
+                onChange={(e)=>setCategory({...category,stream:e.target.value})}
+                />
+                {update?
+                <Button
+                title='Update this Category'
+                customClass={'flatButton'}
+                loading={loading}
+                onClick={categoryUpdate}
+                />
+                :
+                <Button
+                title='Add this category'
+                customClass={'flatButton'}
+                loading={loading}
+                onClick={submitCategory}
+                />
+                
                 }
-                {
-                    !loadingCategory && categoryList.map(category=>
-                    <EditOrDelete 
-                    key={category._id} 
-                    content={category.course_stream} 
-                    onEdit={()=>setCategoryUpdate(category)}
-                    onDelete={()=>removeCategory(category._id)}
-                    />)
-                }
-            </div>
-            <Input
-            placeholder={"Enter a course name"} 
-            customClass={'full-width'}
-            value={category.course}
-            onChange={(e)=>setCategory({...category,course:e.target.value})}
-            />
-            <Input
-            placeholder={"Enter a stream name"} 
-            customClass={'full-width'}
-            value={category.stream}
-            onChange={(e)=>setCategory({...category,stream:e.target.value})}
-            />
-            {update?
-            <Button
-            title='Update this Category'
-            customClass={'flatButton'}
-            loading={loading}
-            onClick={categoryUpdate}
-            />
-            :
-            <Button
-            title='Add this category'
-            customClass={'flatButton'}
-            loading={loading}
-            onClick={submitCategory}
-            />
-            
-            }
-        </Form>
+            </Form>
         </div>
     );
 }
