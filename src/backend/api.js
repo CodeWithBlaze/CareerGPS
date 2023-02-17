@@ -122,6 +122,21 @@ async function updateASemesterName(new_name,semester_id){
 async function deleteASemester(semester_id){
     await API.delete(`/category/semester/${semester_id}`)
 }
+async function addGoals(semester_id,goals){
+    const result = await API.post('/category/goal',{semester_id,goals})
+    return result.data
+}
+async function getAllGoalsBySemesterId(semester_id){
+    const result = await API.get(`/category/goal/${semester_id}`)
+    return result.data
+}
+async function updateGoalInDatabase(semester_id,goal_id,updated_name){
+    const result = await API.put('/category/goal',{semester_id,goal_id,updated_name})
+    return result.data
+}
+async function deleteGoalFromDatabase(semester_id,goal_id){
+    await API.delete(`/category/goal/${semester_id}/${goal_id}`)
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -141,5 +156,9 @@ export {
     getSemestersByCode,
     addASemester,
     updateASemesterName,
-    deleteASemester
+    deleteASemester,
+    addGoals,
+    getAllGoalsBySemesterId,
+    updateGoalInDatabase,
+    deleteGoalFromDatabase
 }
