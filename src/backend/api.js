@@ -107,8 +107,9 @@ async function updateCategory(id,course,stream){
 async function deleteCategory(id){
     await API.delete(`/category/${id}`)
 }
-async function getSemestersByCode(course_stream){
-    const result = await API.get(`/category/semester/code/${course_stream}`)
+async function getSemestersByCode(category,id=false){
+    const result = await API.get(`/category/semester/code${id?`?category_id=${category}`:`?category_name=${category}`}`)
+    console.log(result)
     return result.data
 }
 async function addASemester(code,semester_name){
@@ -137,6 +138,17 @@ async function updateGoalInDatabase(semester_id,goal_id,updated_name){
 async function deleteGoalFromDatabase(semester_id,goal_id){
     await API.delete(`/category/goal/${semester_id}/${goal_id}`)
 }
+async function addTaskToDatabase(taskList){
+    const result = await API.post('/task',{tasks:taskList})
+    return result.data
+}
+async function updateTaskInDatabase(task_id,task){
+    const result = await API.put('/task',{task_id,task})
+    return result.data
+}
+async function removeTaskFromDatabase(task_id){
+    await API.delete(`/task/${task_id}`)
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -160,5 +172,8 @@ export {
     addGoals,
     getAllGoalsBySemesterId,
     updateGoalInDatabase,
-    deleteGoalFromDatabase
+    deleteGoalFromDatabase,
+    addTaskToDatabase,
+    updateTaskInDatabase,
+    removeTaskFromDatabase
 }
