@@ -9,7 +9,7 @@ import Logo from './Logo';
 const ACTIVE_CLASS = 'link-active';
 
 function Navbar({activeMenu='Home'}) {
-    const [active,setActive] = useState(activeMenu)
+    const [active] = useState(activeMenu)
     const {user} = useContext(UserContext);
     const navigate = useNavigate()
     return (

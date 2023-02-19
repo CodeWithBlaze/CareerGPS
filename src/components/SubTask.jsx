@@ -4,7 +4,7 @@ import {faLock} from '@fortawesome/free-solid-svg-icons'
 import {faCircleCheck as checkOutline} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Tag from './Tag';
+
 const taskCategory = {
     COMPLETE:{color:'#3CB043',icon:checkFilled},
     ACTIVE:{color:'#6C63FF',icon:checkOutline},

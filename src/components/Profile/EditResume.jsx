@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PLACEHOLDER_TEXT } from '../../config/constant';
 import '../../css/edit_resume.css';
 import Button from '../Button';

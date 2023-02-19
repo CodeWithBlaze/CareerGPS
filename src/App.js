@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Route, Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import AppNavigator from './AppNavigator';
 import { auth } from './config/firebase';
 import UserContext from './context/UserContext';

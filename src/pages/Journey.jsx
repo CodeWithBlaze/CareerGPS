@@ -23,18 +23,19 @@ function Journey(props) {
     const [activeTask,setActiveTask] = useState([])
     const navigate = useNavigate()    
     useEffect(()=>{
-      getProfile()
-      .then(data=>{
-        setProfile(data.user)
-        setActiveTask(data.activeTask)
-        // fetch task
-        getSemestersByCourse(data.user.course,data.user.stream)
-        .then(goals=>setGoals([...goals]))
+      if(user)
+        getProfile()
+        .then(data=>{
+          setProfile(data.user)
+          setActiveTask(data.activeTask)
+          // fetch task
+          getSemestersByCourse(data.user.course,data.user.stream)
+          .then(goals=>setGoals([...goals]))
+          .catch(err=>console.log(err))
+          setUser({...user,profileData:data.user,activeTaskData:data.activeTask})
+          
+        })
         .catch(err=>console.log(err))
-        setUser({...user,profileData:data.user,activeTaskData:data.activeTask})
-        
-      })
-      .catch(err=>console.log(err))
     },[])
     useEffect(()=>{
       if(currentTask){

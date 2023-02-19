@@ -4,7 +4,7 @@ import { auth } from "../config/firebase";
 import { signup } from "./auth";
 
 const API = axios.create({
-    baseURL:'http://localhost:5000'
+    baseURL:process.env.REACT_APP_BACKEND_BASE_URL
 })
 API.interceptors.request.use((config)=>{
     if(auth && auth.currentUser)
@@ -155,7 +155,7 @@ async function getTaskByGoal(goal_id){
 }
 async function postTaskDetails(category_id,semester_id,main_goal_id,content,belongs_to){
     const result = await API.post(`/task/details/content/`,{
-        category_id,semester_id,main_goal_id,belongs_to,content,belongs_to
+        category_id,semester_id,main_goal_id,belongs_to,content
     })
     return result.data
 }

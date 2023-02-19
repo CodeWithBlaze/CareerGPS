@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { RESUME_CATEGORY } from '../../config/constant';
 import UserContext from '../../context/UserContext';
 import '../../css/resume.css';

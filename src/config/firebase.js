@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBdr5WLVD5xMvikScjE5dWh19PAApRyric",
-  authDomain: "careergps-dbf1b.firebaseapp.com",
-  projectId: "careergps-dbf1b",
-  storageBucket: "careergps-dbf1b.appspot.com",
-  messagingSenderId: "249131708762",
-  appId: "1:249131708762:web:37436f3e9dac8d9b2a4363"
+  apiKey:process.env.REACT_APP_API_KEY,
+  authDomain:process.env.REACT_APP_AUTH_DOMAIN ,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId:process.env.REACT_APP_MESSAGING_SENDER_ID ,
+  appId:process.env.REACT_APP_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
