@@ -5,7 +5,7 @@ import '../css/custom_html.css';
 import { markTaskAsComplete } from '../backend/api';
 import { styles_css } from '../config/constant';
 
-function CustomHTML({content,task_id,setCelebrate,setActiveTask,taskContent}) {
+function CustomHTML({content,task_id,setCelebrate,setActiveTask,taskContent,showCompleteButton=true}) {
     const [loading,setLoading] = useState(false)
     function completeTask(){
         setLoading(true)
@@ -22,16 +22,17 @@ function CustomHTML({content,task_id,setCelebrate,setActiveTask,taskContent}) {
     useLayoutEffect(()=>{
         const doc = document.getElementById('custom_html') 
         doc.innerHTML = `<style>${styles_css}</style>` + doc.innerHTML 
-        
     },[taskContent])
     return (
         <>
         <div className='task-details'>
             <Interweave content={content} allowList={[...ALLOWED_TAG_LIST,'iframe']}/>
         </div>
-        <div className='task-details-mark-complete-btn'>
+        {
+            showCompleteButton && <div className='task-details-mark-complete-btn'>
             <Button title='Mark as complete' onClick={()=>completeTask()} loading={loading}/>
         </div>
+        }
         </>
     );
 }

@@ -3,6 +3,7 @@ import CategoryForm from '../components/Admin/CategoryForm';
 import Goals from '../components/Admin/Goals';
 import SemesterForm from '../components/Admin/SemesterForm';
 import Task from '../components/Admin/Task';
+import TaskDetails from '../components/Admin/TaskDetails';
 import Menu from '../components/Menu';
 import Navbar from '../components/Navbar';
 import '../css/page/adminpanel.css';
@@ -12,6 +13,7 @@ const ADMIN_MENU = [
     {name:'Semester', value:'semester',component:<SemesterForm/>},
     {name:'Goal', value:'goal',component:<Goals/>},
     {name:'Task', value:'task',component:<Task/>},
+    {name:'Task Detail', value:'Task Detail',component:<TaskDetails/>},
 ]
 function AdminPanel(props) {
     return (

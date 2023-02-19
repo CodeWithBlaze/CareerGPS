@@ -1,0 +1,8 @@
+.task-details-container{
+    display: flex;
+    padding-right: 60px;
+}
+.custom-html-container-settings{
+    max-width: 850px;
+    margin-right: 60px;
+}

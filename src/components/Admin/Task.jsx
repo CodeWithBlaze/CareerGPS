@@ -84,7 +84,7 @@ function Task(props) {
         setUpdate(null);
     }
     async function deleteTask(task){
-        if(task.id){
+        if(task.id === 0 || task.id){
             const updated_task_list = taskList.filter(t=>t.id !== task.id)
             setTaskList([...updated_task_list])
         }
@@ -92,6 +92,9 @@ function Task(props) {
             await removeTaskFromDatabase(task._id)
             const updated_list = findAndRemove('_id',task._id,oldTasks)
             setOldTasks([...updated_list])
+        }
+        else{
+            console.log("Nothing Selected")
         }
     }
     async function submitTask(){
