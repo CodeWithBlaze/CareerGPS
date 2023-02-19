@@ -149,6 +149,16 @@ async function updateTaskInDatabase(task_id,task){
 async function removeTaskFromDatabase(task_id){
     await API.delete(`/task/${task_id}`)
 }
+async function getTaskByGoal(goal_id){
+    const result = await API.get(`/task/details/content/goal/${goal_id}`)
+    return result.data
+}
+async function postTaskDetails(category_id,semester_id,main_goal_id,content,belongs_to){
+    const result = await API.post(`/task/details/content/`,{
+        category_id,semester_id,main_goal_id,belongs_to,content,belongs_to
+    })
+    return result.data
+}
 export {
     addUsertoDatabase,
     getProfile,
@@ -175,5 +185,7 @@ export {
     deleteGoalFromDatabase,
     addTaskToDatabase,
     updateTaskInDatabase,
-    removeTaskFromDatabase
+    removeTaskFromDatabase,
+    getTaskByGoal,
+    postTaskDetails
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { getAllGoalsBySemesterId, getCategories, getSemestersByCode, getTaskByGoal, postTaskDetails } from '../../backend/api';
 import '../../css/admin/taskdetails.css';
+import Button from '../Button';
 import CustomHTML from '../CustomHTML';
 import FileUploadButton from '../FileUploadButton';
 
@@ -7,7 +9,20 @@ import Form from './Form';
 function TaskDetails(props) {
     const [taskFile,setTaskFile] = useState(null);
     const [content,setContent] = useState('');
+
+    //list
+    const [categories,setCategories] = useState([])
+    const [semesters,setSemesters] = useState([])
+    const [goals,setGoals] = useState([])
+    const [tasks,setTasks] = useState([])
+    //seelctions
+    const [selectedCategory,setSelectedCategory] = useState('')
+    const [selectedSemester,setSelectedSemester] = useState('')
+    const [selectedGoal,setSelectedGoal] = useState('')
+    const [selectedTask,setSelectedTask] = useState('')
+
     
+
     const showFile = async (e) => {
         e.preventDefault()
         const reader = new FileReader()
@@ -17,10 +32,43 @@ function TaskDetails(props) {
         };
         reader.readAsText(e.target.files[0])
     }
+    useEffect(()=>{
+        getCategories()
+        .then(res=>setCategories([...res]))
+        .catch(err=>console.log(err))
+    },[])
     
+    useEffect(()=>{
+        if(selectedCategory)
+            getSemestersByCode(selectedCategory,true)
+            .then(res=>setSemesters([...res.semesters]))
+            .catch(err=>console.log(err))
+    },[selectedCategory])
+    useEffect(()=>{
+        if(selectedSemester)
+            getAllGoalsBySemesterId(selectedSemester)
+            .then(res=>setGoals([...res]))
+            .catch(err=>console.log(err))
+    },[selectedSemester])
+    useEffect(()=>{
+        if(selectedGoal)
+            getTaskByGoal(selectedGoal)
+            .then(res=>setTasks([...res]))
+            .catch(err=>console.log(err))
+    },[selectedGoal])
+
+
+    function onSubmit(){
+        postTaskDetails(selectedCategory,selectedSemester,selectedGoal,content,selectedTask)
+        .then(res=>alert("Submitted successfully"))
+        .catch(err=>console.log(err))
+    }
+
     return (
         <div className='task-details-container'>
-            {content && <div className='custom-html-container-settings'>
+            {content 
+            && 
+            <div className='custom-html-container-settings'>
                 <CustomHTML 
                     content={`
                     <div id="custom_html">
@@ -30,8 +78,9 @@ function TaskDetails(props) {
                     taskContent={content}
                     showCompleteButton={false}
                     />
-            </div>}
-            
+            </div>
+            }
+            <div>
             <Form>
                 <input 
                 id='task-details-input' 
@@ -49,10 +98,42 @@ function TaskDetails(props) {
                 for_id={'task-details-input'}
                 title={'Choose a file'}
                 customClass={'flatButton'}
-                customStyle={{width:250}}
                 />
                 
             </Form>
+            <Form>
+                <select className='text-based-input-select admin-select' value={selectedCategory} onChange={(e)=>setSelectedCategory(e.target.value)}>
+                    <option>Choose a Course</option>
+                    {
+                        categories.map(item=><option key={item._id} value={item._id}>{item.course_stream}</option>)
+                    }
+                </select>
+                
+                <select className='text-based-input-select admin-select' value={selectedSemester} onChange={(e)=>setSelectedSemester(e.target.value)}>
+                    <option>Choose a Semester</option>
+                    {
+                        semesters.map(sem=><option  key={sem._id} value={sem._id}>{sem.name}</option>)
+                    }
+                </select>
+                <select className='text-based-input-select admin-select' value={selectedGoal} onChange={(e)=>setSelectedGoal(e.target.value)}>
+                    <option>Choose a Goal</option>
+                    {
+                        goals.map(goal=><option key={goal._id} value={goal._id}>{goal.title}</option>)
+                    }
+                </select>
+                <select className='text-based-input-select admin-select' value={selectedTask} onChange={(e)=>setSelectedTask(e.target.value)}>
+                    <option>Choose a Goal</option>
+                    {
+                        tasks.map(task=><option key={task._id} value={task._id}>{task.task_name}</option>)
+                    }
+                </select>
+                <Button
+                title='Submit'
+                customClass={'flatButton'}
+                onClick={onSubmit}
+                />
+            </Form>
+            </div>
         </div>
     );
 }
