@@ -94,6 +94,7 @@ async function getCategories(){
     const result = await API.get('/category')
     return result.data
 }
+
 // admin api's
 async function addCategory(category){
     //category must be course stream object

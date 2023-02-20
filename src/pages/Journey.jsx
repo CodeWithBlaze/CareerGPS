@@ -54,6 +54,7 @@ function Journey(props) {
         <Navbar activeMenu='My Journey'/>
         <div className='main-app-container'>
           <div className='dashboard-profile'>
+            {!profile && <Spinner/>}
             {profile && user && <>
             <CircularImage img={profile.profile_image || profile_photo}/>
             <h3 className='dashboard-profile-name'>{profile.full_name}</h3>
