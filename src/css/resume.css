@@ -1,6 +1,5 @@
 .resume-container{
     width: 60%;
-    position: relative;
     min-height: 965px;
     height:fit-content;
     background-color:white;
@@ -40,9 +39,9 @@
     margin-top: 10px;
 }
 .saveResume{
-    position: absolute;
-    top:10px;
-    right: 0;
+    display: flex;
+    position: relative;
+    justify-content: flex-end;
 }
 .icon-for-resume{
     min-width: 45px;

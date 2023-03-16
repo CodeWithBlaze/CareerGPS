@@ -4,10 +4,12 @@ import '../css/resume_category.css';
 
 function ResumeCategory({
     type,
-    details
+    details,
+    onClick
 }) {
+    
     return (
-        <div className='resume-category'>
+        <div className='resume-category' onClick={onClick}>
            {(type === RESUME_CATEGORY.EDUCATION || type === RESUME_CATEGORY.EXPERIENCE || type === RESUME_CATEGORY.PROJECT) 
             && 
             <div className='company-role'>
@@ -17,7 +19,7 @@ function ResumeCategory({
             }
             {(type === RESUME_CATEGORY.EDUCATION || type === RESUME_CATEGORY.EXPERIENCE) 
             &&
-            <p>{details.location}</p>
+            <p style={{marginTop:10}}>{details.location}</p>
             }
             {(type === RESUME_CATEGORY.EDUCATION || type === RESUME_CATEGORY.EXPERIENCE) 
             &&

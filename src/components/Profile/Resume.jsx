@@ -1,13 +1,14 @@
-import { useContext, useState } from 'react';
+import { useContext} from 'react';
 import { RESUME_CATEGORY } from '../../config/constant';
 import UserContext from '../../context/UserContext';
 import '../../css/resume.css';
 import ResumeCategory from '../ResumeCategory';
-import { faCloud,faDownload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import ResumeHeadingText from '../ResumeHeadingText';
-import { addResume} from '../../backend/api';
-import { Spinner } from 'react-activity';
+
+
+
+
 function Resume({
     profile,
     experiences,
@@ -15,30 +16,14 @@ function Resume({
     projects, 
     skills, 
     achievements,
-    basicDetails
+    basicDetails,
+    setUpdateData
 }){
-    async function saveResumeToDatabase(){
-        setSave(true);
-        const resume = {
-            experiences,
-            educations, 
-            projects, 
-            skills, 
-            achievements,
-            basicDetails
-        }
-        try{
-            await addResume(resume)
-        }
-        catch(err){
-            console.log(err)
-        }
-        setSave(false)
-    }
+    
     const {user} = useContext(UserContext)
-    const [save,setSave] = useState(false);
+    
     return (
-       <div className="resume-container">
+       <div className="resume-container" id='resume-container'>
             <div className='resume-left-content'>
                 <div className='resume-basic-details'>
                     <h1>{basicDetails.name || profile.full_name || 'Your Name'}</h1>
@@ -51,6 +36,7 @@ function Resume({
                             <ResumeCategory key={experience._id} 
                             type={RESUME_CATEGORY.EXPERIENCE}
                             details={experience}
+                            onClick={()=>setUpdateData({type:RESUME_CATEGORY.EXPERIENCE,...experience})}
                             />)
                         }
                         
@@ -60,6 +46,7 @@ function Resume({
                             <ResumeCategory key={education._id} 
                             type={RESUME_CATEGORY.EDUCATION}
                             details={education}
+                            onClick={()=>setUpdateData({type:RESUME_CATEGORY.EDUCATION,...education})}
                             />)
                         }
                         
@@ -81,6 +68,7 @@ function Resume({
                             <ResumeCategory key={project._id} 
                             type={RESUME_CATEGORY.PROJECT}
                             details={project}
+                            onClick={()=>setUpdateData({type:RESUME_CATEGORY.PROJECT,...project})}
                             />)
                         }
                         
@@ -90,6 +78,7 @@ function Resume({
                             <ResumeCategory key={skill._id} 
                             type={RESUME_CATEGORY.SKILL}
                             details={skill}
+                            onClick={()=>setUpdateData({type:RESUME_CATEGORY.SKILL,...skill})}
                             />)
                         }
                         <ResumeHeadingText text={'ACHIEVEMENTS'}/>
@@ -98,21 +87,15 @@ function Resume({
                             <ResumeCategory key={achievement._id} 
                             type={RESUME_CATEGORY.ACHIEVEMENT}
                             details={achievement}
+                            onClick={()=>setUpdateData({type:RESUME_CATEGORY.ACHIEVEMENT,...achievement})}
                             />)
                         }   
                         
                 </div>
             </div>
-            <div className='saveResume'>
-                <div className='icon-container icon-for-resume' onClick={()=>saveResumeToDatabase()}>
-                    {
-                        save?<Spinner color='white'/>:<FontAwesomeIcon icon={faCloud} color={'white'} size={'lg'}/>
-                    }
-                </div>
-                <div className='icon-container icon-for-resume'>
-                    <FontAwesomeIcon icon={faDownload} color={'white'} size={'lg'}/>
-                </div>
-            </div>
+            
+            
+            
         </div>
        
     )

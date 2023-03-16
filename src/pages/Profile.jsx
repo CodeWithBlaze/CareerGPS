@@ -7,8 +7,12 @@ import Accounts from '../components/Profile/Accounts';
 import EditResume from '../components/Profile/EditResume';
 import Resume from '../components/Profile/Resume';
 import '../css/page/profile.css';
-
-
+import { faCloud,faDownload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { addResume} from '../backend/api';
+import { Spinner } from 'react-activity';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
     
   
 
@@ -32,8 +36,52 @@ function ResumeEditor({profile}){
     const [skills,setSkills] = useState([])
     const [achievements,setAchievements] = useState([])
     const [basicDetails,setBasicDetails] = useState({name:'',small_desc:'',address:'',email:''})
+    const [save,setSave] = useState(false);
+
+    // updates
+    const [updateData,setUpdateData] = useState(null);
+    async function saveResumeToDatabase(){
+        setSave(true);
+        const resume = {
+            experiences,
+            educations, 
+            projects, 
+            skills, 
+            achievements,
+            basicDetails
+        }
+        try{
+            await addResume(resume)
+        }
+        catch(err){
+            console.log(err)
+        }
+        setSave(false)
+    }
+    function downloadResumeAsPDF(){
+        const input = document.getElementById('resume-container');
+        html2canvas(input)
+        .then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save("download.pdf");  
+        })
+    }
+    
     return (
-        <div className='resume-editor-container'>
+        <>
+            <div className='saveResume'>
+                <div className='icon-container icon-for-resume' onClick={()=>saveResumeToDatabase()}>
+                    {
+                        save?<Spinner color='white'/>:<FontAwesomeIcon icon={faCloud} color={'white'} size={'lg'}/>
+                    }
+                </div>
+                <div className='icon-container icon-for-resume' onClick={downloadResumeAsPDF}>
+                        <FontAwesomeIcon icon={faDownload} color={'white'} size={'lg'}/>
+                </div>
+            </div>
+            <div className='resume-editor-container'>
             <Resume 
             profile = {profile}
             experiences = {experiences}
@@ -42,6 +90,7 @@ function ResumeEditor({profile}){
             skills = {skills}
             achievements = {achievements}
             basicDetails = {basicDetails}
+            setUpdateData={setUpdateData}
             />
             <EditResume
             
@@ -51,8 +100,12 @@ function ResumeEditor({profile}){
             projects = {projects}   setProjects = {setProjects}
             skills = {skills}   setSkills = {setSkills}
             achievements = {achievements} setAchievements = {setAchievements}
+            updateData={updateData}
+            setUpdateData={setUpdateData}
             />
         </div>
+        </>
+        
     )
 }
 function Profile() {

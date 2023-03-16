@@ -1,8 +1,6 @@
 .resume-category{
     margin-bottom: 25px;
-}
-.company-role{
-    display: flex;
+    cursor: pointer;
 }
 .company-role h3{
     margin-right: 15px;

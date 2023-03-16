@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PLACEHOLDER_TEXT } from '../../config/constant';
+import React, { useEffect, useState } from 'react';
+import { PLACEHOLDER_TEXT, RESUME_CATEGORY } from '../../config/constant';
 import '../../css/edit_resume.css';
 import Button from '../Button';
 import Input from '../Input';
@@ -19,7 +19,8 @@ function EditResume({
     educations,setEducations,
     projects,setProjects, 
     skills,setSkills, 
-    achievements,setAchievements 
+    achievements,setAchievements,
+    updateData,setUpdateData 
 }) {
     const [selected,setSelected] = useState(OPTIONS[0].value)
     const [resumeDetails,setResumeDetails] = useState({
@@ -34,7 +35,91 @@ function EditResume({
         date:'',
         description:''
     })
-    
+    function setFormToInitialState(){
+        setSelected(OPTIONS[0].value)
+        setResumeDetails({
+            type:selected,
+            name:'',
+            small_desc:'',
+            address:'',
+            email:'',
+            company:'',
+            role:'',
+            location:'',
+            date:'',
+            description:''
+        })
+    }
+    function setForUpdate(){
+        setSelected(updateData.type)
+        const update_properties = {}
+        Object.keys(resumeDetails).forEach(key=>{
+            if(updateData[key])
+                update_properties[key] = updateData[key]
+        })
+        setResumeDetails({...resumeDetails,...update_properties})
+    }
+    function getCategory(){
+        let category = null;
+        let setCategory = null;
+
+        if(resumeDetails.type === RESUME_CATEGORY.EXPERIENCE){
+            category = experiences;
+            setCategory=setExperiences
+        }
+        else if(resumeDetails.type === RESUME_CATEGORY.EDUCATION){
+            category = educations;
+            setCategory=setEducations
+        }
+        else if(resumeDetails.type === RESUME_CATEGORY.ACHIEVEMENT){
+            category = achievements;
+            setCategory=setAchievements
+        }
+        else if(resumeDetails.type === RESUME_CATEGORY.EXPERIENCE){
+            category = experiences;
+            setCategory=setExperiences
+        }
+        else if(resumeDetails.type === RESUME_CATEGORY.PROJECT){
+            category = projects;
+            setCategory=setProjects
+        }
+        else if(resumeDetails.type === RESUME_CATEGORY.SKILL){
+            category = skills;
+            setCategory=setSkills
+        }
+        return {category,setCategory}
+    }
+    function updateItemInResume(){
+        const {category,setCategory} = getCategory()
+        const index = category.findIndex(item=>item._id === updateData._id)
+        if(index === -1){
+            alert("Soemthing went wrong")
+            return;
+        }
+        const updated_category = [...category]
+        const update_properties = {}
+        Object.keys(resumeDetails).forEach(key=>{
+            if(resumeDetails[key])
+                update_properties[key] = resumeDetails[key] 
+        })
+        
+        updated_category[index] = {_id:index+1,...update_properties}
+        console.log(updated_category)
+        setCategory([...updated_category])
+        setUpdateData(null);
+        setFormToInitialState()
+    }
+    function deleteItemFromResume(){
+        const {category,setCategory} = getCategory();
+        const updated_category = category.filter(item=>item._id !== updateData._id)
+        setCategory([...updated_category])
+        setUpdateData(null)
+        setFormToInitialState()
+    }
+    useEffect(()=>{
+        if(updateData)
+            setForUpdate()
+    },[updateData])
     function updateBasicDetails(){
         setBasicDetails({name:resumeDetails.name,small_desc:resumeDetails.small_desc,address:resumeDetails.address,email:resumeDetails.email})
     }
@@ -181,11 +266,28 @@ function EditResume({
                         value={resumeDetails.description}
                         onChange={(e)=>setResumeDetails({...resumeDetails,description:e.target.value})}
                 />}
-                <Button
-                title={`Add ${selected}`}
-                customClass={'flatButton'}
-                onClick={()=>addTypeToArray()}
-                />
+                {
+                    !updateData?
+                    <Button
+                        title={`Add ${selected}`}
+                        customClass={'flatButton'}
+                        onClick={()=>addTypeToArray()}
+                    />
+                    :
+                    <div>
+                        <Button
+                        title={`Update ${selected}`}
+                        customClass={'flatButton'}
+                        onClick={()=>updateItemInResume()}
+                        />
+                        <Button
+                        title={`Remove ${selected}`}
+                        customStyle={{backgroundColor:'red'}}
+                        customClass={'flatButton'}
+                        onClick={()=>deleteItemFromResume()}
+                        />
+                    </div>
+                }
             </div>
         </div>
     );
