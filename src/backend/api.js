@@ -3,8 +3,9 @@ import { deleteUser } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { signup } from "./auth";
 
+const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL
 const API = axios.create({
-    baseURL:process.env.REACT_APP_BACKEND_BASE_URL
+    baseURL:BASE_URL
 })
 API.interceptors.request.use((config)=>{
     if(auth && auth.currentUser)
@@ -37,8 +38,13 @@ async function getProfile(){
     const result = await API.get('/user')
     return result.data
 }
-async function getSemestersByCourse(course,stream){
-    const result = await API.get(`/category/semester?course=${course}&stream=${stream}`)
+// get all categories before auth
+async function getCategoriesAndSemesters(){
+    const result = await axios.get(BASE_URL+'/category/all')
+    return result
+}
+async function getSemestersByCourse(){
+    const result = await API.get(`/category/semester`)
     const semesters = result.data.semesters;
     const main_goals = []
     semesters.forEach(semester=>{
@@ -172,6 +178,7 @@ export {
     updateUserProfilePhoto,
     updateUserProfile,
     getCategories,
+    getCategoriesAndSemesters,
     //admin exports
     addCategory,
     updateCategory,

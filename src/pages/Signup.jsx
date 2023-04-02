@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import '../css/page/register.css'
 import '../css/page/common.css'
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { addUsertoDatabase } from '../backend/api';
+import { addUsertoDatabase, getCategoriesAndSemesters } from '../backend/api';
 import LinkText from '../components/LinkText';
 function Signup(props) {
     //variables
     const [error,setError] = useState('')
+    const [category,setCategory] = useState([])
+    const [semesters,setSemesters] = useState('');
     const navigate = useNavigate()
+
     const [userDetails,setUserDetails] = useState({
         first_name:"",
         last_name:"",
         email:"",
         password:"",
-        course:"BTech",
-        stream:"CSE",
-        semester:"1"
+        course:"",
+        semester:""
     })
     const [loading,setLoading] = useState(false);
     // function
+    useEffect(()=>{
+        getCategoriesAndSemesters()
+        .then((res)=>{
+            setCategory([...res.data])
+            setSemesters([...res.data[0].semesters])
+            console.log(res.data[0].semesters)
+            setUserDetails({...userDetails,course:res.data[0]._id,semester:res.data[0].semesters[0]._id})
+        })
+        .catch(err=>console.log(err))
+    },[])
     async function postUserData(){
         try{
             setLoading(true)
@@ -40,6 +52,12 @@ function Signup(props) {
             setLoading(false);
         }
         
+    }
+    function updateUserCourse(id){
+        // find the course and take the semester
+        const selectedCourse = (category.filter(item=>item._id === id))[0]
+        setUserDetails({...userDetails,course:id,semester:selectedCourse.semesters[0]._id})
+        setSemesters(selectedCourse.semesters)
     }
     return (
         <>
@@ -81,20 +99,16 @@ function Signup(props) {
                     onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
                 </div>
-                <div className='text-based-input'>
+                {category.length > 0 && <div className='text-based-input'>
                     I am a 
-                    <select className='text-based-input-select' value={userDetails.course} onChange={(e)=>setUserDetails({...userDetails,course:e.target.value})}>
-                        <option>BTech</option>
-                    </select>
-                    <select className='text-based-input-select' value={userDetails.stream} onChange={(e)=>setUserDetails({...userDetails,stream:e.target.value})}>
-                        <option>CSE</option>
+                    <select className='text-based-input-select' value={userDetails.course} onChange={(e)=>updateUserCourse(e.target.value)}>
+                        {category.map(course=><option key={course._id} value={course._id}>{course.course_stream.replace('_',' ')}</option>)}
                     </select>
                     <label>student currently in</label> 
                     <select className='text-based-input-select' value={userDetails.semester} onChange={(e)=>setUserDetails({...userDetails,semester:e.target.value})}>
-                        <option value={"1"}>1st</option>
-                        <option  value={"2"}>2nd</option>
-                        <option value={"3"}>3rd</option>
-                        <option value={"4"}>4th</option>
+                        {
+                            semesters.map(sem=><option key={sem._id} value={sem._id}>{sem.name}</option>)
+                        }
                     </select>
                     semester.<br/> 
                     <Button 
@@ -106,7 +120,7 @@ function Signup(props) {
                     text={<p>Already have a account? <label style={{fontWeight:600,color:'#6C63FF',cursor:'pointer'}}>Sign In here</label></p>}
                     onClick={()=>navigate('/register')}
                     />
-                </div>
+                </div>}
             </div>
         </div>
         </>

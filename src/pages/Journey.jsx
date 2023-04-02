@@ -29,7 +29,7 @@ function Journey(props) {
           setProfile(data.user)
           setActiveTask(data.activeTask)
           // fetch task
-          getSemestersByCourse(data.user.course,data.user.stream)
+          getSemestersByCourse()
           .then(goals=>setGoals([...goals]))
           .catch(err=>console.log(err))
           setUser({...user,profileData:data.user,activeTaskData:data.activeTask})

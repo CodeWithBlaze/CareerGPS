@@ -16,6 +16,9 @@ function SubTask({task_id,task_title,task_rank,setTask,currentTask,activeTask}) 
     function setTaskCategory(){
         const first_active_task = activeTask[0]
         const last_active_task = activeTask[activeTask.length - 1]
+        console.log("First",first_active_task)
+        console.log("last",last_active_task)
+        console.log("task",task_rank)
         if(task_rank < first_active_task.rank)
             setCategory(taskCategory.COMPLETE);
         else if(task_rank > last_active_task.rank)
