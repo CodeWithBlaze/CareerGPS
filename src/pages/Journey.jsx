@@ -38,13 +38,20 @@ function Journey(props) {
         .catch(err=>console.log(err))
     },[])
     useEffect(()=>{
+      const lockedContentHTML = `
+      <div style="height:100%;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;">
+      <img style="width:150px;height:150px;" src="https://res.cloudinary.com/codecafe/image/upload/v1680409685/CareerGPS/lock_mg9cj5.png">
+      <h1 style="margin-left:15px;margin-top:30px;text-align:center;">This content is still locked. Complete previous task to unlock this content</h1>
+      </div>`;
       if(currentTask){
         setCurrentTaskContent(null);
         getTaskDetails(currentTask)
         .then(res=>setCurrentTaskContent(res.content))
         .catch(err=>{
-          console.log(err)
-          setCurrentTaskContent('<h1>No Content Found</h1>')
+          if(err.response.status === 403)
+              setCurrentTaskContent(lockedContentHTML)
+          else
+              setCurrentTaskContent('<h1>No Content Found</h1>')
         })
         
       }

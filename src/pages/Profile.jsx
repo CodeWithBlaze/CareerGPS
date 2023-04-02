@@ -64,7 +64,10 @@ function ResumeEditor({profile}){
         .then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
+            const imageProperties = pdf.getImageProperties(imgData)
+            const pdfWidth = pdf.internal.pageSize.getWidth()
+            const pdfHeight = (imageProperties.height * pdfWidth) / imageProperties.width; 
+            pdf.addImage(imgData, 'PNG', 0, 0,pdfWidth,pdfHeight);
             pdf.save("download.pdf");  
         })
     }
