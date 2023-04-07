@@ -66,6 +66,13 @@ async function getTaskDetails(task_id){
     const result = await API.get(`/task/details/content/${task_id}`)
     return result.data
 }
+//update Task rank
+async function updateTaskRank(placeTask,afterTask){
+    await API.put('/task/rank',{
+        task1_id:afterTask,
+        task_id:placeTask
+    })
+}
 //add user resume
 async function addResume(resume){
     const result = await API.post('/user/add/resume',{resume})
@@ -195,5 +202,6 @@ export {
     updateTaskInDatabase,
     removeTaskFromDatabase,
     getTaskByGoal,
-    postTaskDetails
+    postTaskDetails,
+    updateTaskRank
 }

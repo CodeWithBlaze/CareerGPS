@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getAllGoalsBySemesterId, getCategories, getSemestersByCode, getTaskByGoal, postTaskDetails } from '../../backend/api';
-import '../../css/admin/taskdetails.css';
-import Button from '../Button';
-import CustomHTML from '../CustomHTML';
-import FileUploadButton from '../FileUploadButton';
-
 import Form from './Form';
-function TaskDetails(props) {
-    const [taskFile,setTaskFile] = useState(null);
-    const [content,setContent] = useState('');
+import { getAllGoalsBySemesterId, getCategories, getSemestersByCode, getTaskByGoal, updateTaskRank } from '../../backend/api';
+import '../../css/admin/arrange_task.css';
+import Button from '../Button';
 
+function ArrangeTask(props) {
     //list
     const [categories,setCategories] = useState([])
     const [semesters,setSemesters] = useState([])
@@ -19,25 +14,15 @@ function TaskDetails(props) {
     const [selectedCategory,setSelectedCategory] = useState('')
     const [selectedSemester,setSelectedSemester] = useState('')
     const [selectedGoal,setSelectedGoal] = useState('')
-    const [selectedTask,setSelectedTask] = useState('')
-
-    
-
-    const showFile = async (e) => {
-        e.preventDefault()
-        const reader = new FileReader()
-        reader.onload = async (e) => { 
-          const text = (e.target.result)
-          setContent(text)
-        };
-        reader.readAsText(e.target.files[0])
-    }
+    const [placeTask,setPlaceTask] = useState('');
+    const [afterTask,setAfterTask] = useState('');
+    //loading
+    const [loading,setLoading] = useState(false);
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories([...res]))
         .catch(err=>console.log(err))
     },[])
-    
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory,true)
@@ -56,51 +41,15 @@ function TaskDetails(props) {
             .then(res=>setTasks([...res]))
             .catch(err=>console.log(err))
     },[selectedGoal])
-
-
-    function onSubmit(){
-        postTaskDetails(selectedCategory,selectedSemester,selectedGoal,content,selectedTask)
-        .then(res=>alert("Submitted successfully"))
-        .catch(err=>console.log(err))
+    function updateTaskSequence(){
+        setLoading(true);
+        updateTaskRank(placeTask,afterTask)
+        .then(()=>alert("Rank updated refresh to see changes"))
+        .catch((err)=>console.log(err))
+        .finally(()=>setLoading(false))
     }
-
     return (
-        <div className='task-details-container'>
-            {content 
-            && 
-            <div className='custom-html-container-settings'>
-                <CustomHTML 
-                    content={`
-                    <div id="custom_html">
-                    ${content}
-                    </div>
-                    `} 
-                    taskContent={content}
-                    showCompleteButton={false}
-                    />
-            </div>
-            }
-            <div>
-            <Form>
-                <input 
-                id='task-details-input' 
-                type={'file'} 
-                className='profile-photo-label'
-                onChange={(event) => {
-                    setTaskFile(event.target.files[0])
-                    showFile(event);
-                }}
-                />
-                <div>
-                    {taskFile && taskFile.name && <label>{taskFile.name}</label>}
-                </div>
-                <FileUploadButton
-                for_id={'task-details-input'}
-                title={'Choose a file'}
-                customClass={'flatButton'}
-                />
-                
-            </Form>
+        <div className='admin-category'>
             <Form>
                 <select className='text-based-input-select admin-select' value={selectedCategory} onChange={(e)=>setSelectedCategory(e.target.value)}>
                     <option>Choose a Course</option>
@@ -121,21 +70,32 @@ function TaskDetails(props) {
                         goals.map(goal=><option key={goal._id} value={goal._id}>{goal.title}</option>)
                     }
                 </select>
-                <select className='text-based-input-select admin-select' value={selectedTask} onChange={(e)=>setSelectedTask(e.target.value)}>
-                    <option>Choose a Task</option>
+            </Form>
+            <Form>
+            <p className='select-labels'>Place task</p>
+                <select className='text-based-input-select admin-select'value={placeTask} onChange={(e)=>setPlaceTask(e.target.value)}>
+                    <option value={''}>Choose a Task</option>
+                    {
+                        tasks.map(task=><option key={task._id} value={task._id}>{task.task_name}</option>)
+                    }
+                </select>
+                <p className='select-labels'>After</p>
+                <select className='text-based-input-select admin-select' value={afterTask} onChange={(e)=>setAfterTask(e.target.value)}>
+                    <option value={''} >Choose a Task</option>
+                    <option value={'START'} >START</option>
                     {
                         tasks.map(task=><option key={task._id} value={task._id}>{task.task_name}</option>)
                     }
                 </select>
                 <Button
-                title='Submit'
-                customClass={'flatButton'}
-                onClick={onSubmit}
+                    title='Update this Task'
+                    customClass={'flatButton'}
+                    onClick={updateTaskSequence}
+                    loading={loading}
                 />
             </Form>
-            </div>
         </div>
     );
 }
 
-export default TaskDetails;
+export default ArrangeTask;

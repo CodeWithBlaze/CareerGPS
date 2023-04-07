@@ -25,13 +25,13 @@ function TaskCategory({heading,subheading,goal_id,semester_id,setTask,currentTas
         </div>
         {
             visible && data.map(task=>
-            <SubTask key={task._id} 
-            task_id={task._id} 
-            task_title={task.task_name} 
+            <SubTask 
+            key={task._id} 
+            task={task}
             setTask={setTask} 
             currentTask={currentTask} 
             activeTask={activeTask} 
-            task_rank={task.rank}
+            
             />)
         }
         </>

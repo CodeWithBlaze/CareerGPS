@@ -7,12 +7,14 @@ import TaskDetails from '../components/Admin/TaskDetails';
 import Menu from '../components/Menu';
 import Navbar from '../components/Navbar';
 import '../css/page/adminpanel.css';
+import ArrangeTask from '../components/Admin/ArrangeTask';
 
 const ADMIN_MENU = [
     {name:'Category', value:'category',component:<CategoryForm/>},
     {name:'Semester', value:'semester',component:<SemesterForm/>},
     {name:'Goal', value:'goal',component:<Goals/>},
     {name:'Task', value:'task',component:<Task/>},
+    {name:'Arrange Task', value:'arrange_task',component:<ArrangeTask/>},
     {name:'Task Detail', value:'Task Detail',component:<TaskDetails/>},
 ]
 function AdminPanel(props) {
