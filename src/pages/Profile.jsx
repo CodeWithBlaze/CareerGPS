@@ -13,6 +13,7 @@ import { addResume} from '../backend/api';
 import { Spinner } from 'react-activity';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { errorToast, successToast } from '../components/Toast';
     
   
 
@@ -52,11 +53,15 @@ function ResumeEditor({profile}){
         }
         try{
             await addResume(resume)
+            successToast('Resume Updated')
         }
         catch(err){
-            console.log(err)
+            // console.log(err)
+            errorToast('Something went wrong')
         }
-        setSave(false)
+        finally{
+            setSave(false)
+        }
     }
     function downloadResumeAsPDF(){
         const input = document.getElementById('resume-container');

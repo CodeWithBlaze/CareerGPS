@@ -5,6 +5,7 @@ import Button from '../Button';
 import Input from '../Input';
 import EditOrDelete from './EditOrDelete';
 import Form from './Form';
+import { errorToast, successToast } from '../Toast';
 
 function Task(props) {
     const [task,setTask] = useState({title:'',category_id:'',semester_id:'',main_goal_id:''})
@@ -26,19 +27,19 @@ function Task(props) {
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories([...res]))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Error while fetching Categories'))
     },[])
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory,true)
             .then(res=>setSemesters([...res.semesters]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Semester'))
     },[selectedCategory])
     useEffect(()=>{
         if(selectedSemester)
             getAllGoalsBySemesterId(selectedSemester)
             .then(res=>setGoals([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Goals'))
     },[selectedSemester])
     function addTask(){
         setTaskList([...taskList,
@@ -70,16 +71,24 @@ function Task(props) {
             
         }
         else if(update._id){
-            setUpdateLoading(true);
-            const result = await updateTaskInDatabase(update._id,{
-                category_id:selectedCategory,
-                semester_id:selectedSemester,
-                main_goal_id:selectedGoal,
-                title:task.title
-            })
-            const updated_list = findAndReplace('_id',update._id,result,oldTasks)
-            setOldTasks([...updated_list])
-            setUpdateLoading(false)
+            try {
+                setUpdateLoading(true);
+                const result = await updateTaskInDatabase(update._id,{
+                    category_id:selectedCategory,
+                    semester_id:selectedSemester,
+                    main_goal_id:selectedGoal,
+                    title:task.title
+                })
+                const updated_list = findAndReplace('_id',update._id,result,oldTasks)
+                setOldTasks([...updated_list])
+                successToast('Task updated')
+            } catch (error) {
+                errorToast('Task Updated Failed')
+            }
+            finally{
+                setUpdateLoading(false)
+            }
+            
         }
         setUpdate(null);
     }
@@ -89,18 +98,30 @@ function Task(props) {
             setTaskList([...updated_task_list])
         }
         else if(task._id){
-            await removeTaskFromDatabase(task._id)
-            const updated_list = findAndRemove('_id',task._id,oldTasks)
-            setOldTasks([...updated_list])
+            try {
+                await removeTaskFromDatabase(task._id)
+                const updated_list = findAndRemove('_id',task._id,oldTasks)
+                setOldTasks([...updated_list])
+                successToast('Task Deleted') 
+            } catch (error) {
+                errorToast('Error while deleting Task')
+            }
+            
         }
         else{
             console.log("Nothing Selected")
         }
     }
     async function submitTask(){
-        const updated_result = await addTaskToDatabase(taskList)
-        setOldTasks([...oldTasks,...updated_result])
-        setTaskList([])
+        try {
+            const updated_result = await addTaskToDatabase(taskList)
+            setOldTasks([...oldTasks,...updated_result])
+            setTaskList([])
+            successToast('Task Added') 
+        } catch (error) {
+            errorToast('Error while Adding Task')
+        }
+        
     }
     function cancelTask(){
         setUpdate(null);
@@ -110,7 +131,7 @@ function Task(props) {
         if(selectedSemester && selectedGoal)
         getTaskBySemesterAndGoal(selectedSemester,selectedGoal)
         .then(res=>setOldTasks([...res]))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Error while fetching Task'))
     },[selectedSemester,selectedGoal])
     return (
         <div className='admin-category'>

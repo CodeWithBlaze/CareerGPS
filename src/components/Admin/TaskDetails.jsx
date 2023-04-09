@@ -6,6 +6,7 @@ import CustomHTML from '../CustomHTML';
 import FileUploadButton from '../FileUploadButton';
 
 import Form from './Form';
+import { errorToast } from '../Toast';
 function TaskDetails(props) {
     const [taskFile,setTaskFile] = useState(null);
     const [content,setContent] = useState('');
@@ -20,8 +21,8 @@ function TaskDetails(props) {
     const [selectedSemester,setSelectedSemester] = useState('')
     const [selectedGoal,setSelectedGoal] = useState('')
     const [selectedTask,setSelectedTask] = useState('')
-
-    
+    //loading
+    const [loading,setLoading] = useState(false)
 
     const showFile = async (e) => {
         e.preventDefault()
@@ -35,33 +36,35 @@ function TaskDetails(props) {
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories([...res]))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Error while fetching Categories'))
     },[])
     
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory,true)
             .then(res=>setSemesters([...res.semesters]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Semesters'))
     },[selectedCategory])
     useEffect(()=>{
         if(selectedSemester)
             getAllGoalsBySemesterId(selectedSemester)
             .then(res=>setGoals([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Goals'))
     },[selectedSemester])
     useEffect(()=>{
         if(selectedGoal)
             getTaskByGoal(selectedGoal)
             .then(res=>setTasks([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Tasks'))
     },[selectedGoal])
 
 
     function onSubmit(){
+        setLoading(true);
         postTaskDetails(selectedCategory,selectedSemester,selectedGoal,content,selectedTask)
-        .then(res=>alert("Submitted successfully"))
-        .catch(err=>console.log(err))
+        .then(res=>alert("Task Details Added"))
+        .catch(err=>errorToast('Error while uplaoding'))
+        .finally(()=>setLoading(false))
     }
 
     return (

@@ -5,6 +5,8 @@ import Button from '../Button';
 import Input from '../Input';
 import { faCloud } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { containsEmptyValues, isEmailValid } from '../../helpers';
+import { errorToast } from '../Toast';
 const OPTIONS = [
     {name:'Experiences',value:'experience'},
     {name:'Projects',value:'project'},
@@ -121,10 +123,19 @@ function EditResume({
             setForUpdate()
     },[updateData])
     function updateBasicDetails(){
-        setBasicDetails({name:resumeDetails.name,small_desc:resumeDetails.small_desc,address:resumeDetails.address,email:resumeDetails.email})
+        if(!containsEmptyValues([resumeDetails.name,resumeDetails.small_desc,resumeDetails.address,resumeDetails.email]))
+            setBasicDetails({name:resumeDetails.name,small_desc:resumeDetails.small_desc,address:resumeDetails.address,email:resumeDetails.email})
+        else if(!isEmailValid(resumeDetails.email))
+            errorToast('Not a valid Email')
+        else
+            errorToast('All fields are required')
     }
     function addTypeToArray(){
         if(resumeDetails.type === 'experience'){
+            if(containsEmptyValues([resumeDetails.company,resumeDetails.role,resumeDetails.date])){
+                errorToast('Company Name, Role and Date are mandatory fields')
+                return;
+            }
             const new_experience = {
             _id:experiences.length + 1,
             company:resumeDetails.company,
@@ -136,6 +147,10 @@ function EditResume({
             setExperiences([...experiences,new_experience])
         }
         else if(resumeDetails.type === 'project'){
+            if(containsEmptyValues([resumeDetails.company,resumeDetails.role])){
+                errorToast('Project Name, Stack are mandatory fields')
+                return;
+            }
             const new_project = {
                 _id:projects.length + 1,
                 company:resumeDetails.company,
@@ -145,6 +160,10 @@ function EditResume({
             setProjects([...projects,new_project])
         }
         else if(resumeDetails.type === 'education'){
+            if(containsEmptyValues([resumeDetails.company,resumeDetails.role,resumeDetails.date])){
+                errorToast('College Name or School Name,Degree,Date are mandatory fields')
+                return;
+            }
             const new_education = {
                 _id:educations.length + 1,
                 company:resumeDetails.company,
@@ -156,6 +175,10 @@ function EditResume({
             setEducations([...educations,new_education])
         }
         else if(resumeDetails.type === 'skill'){
+            if(containsEmptyValues([resumeDetails.company])){
+                errorToast('Skill cannot be empty')
+                return;
+            }
             const new_skill = {
                 _id:skills.length + 1,
                 company:resumeDetails.company,
@@ -163,12 +186,13 @@ function EditResume({
             setSkills([...skills,new_skill])
         }
         else if(resumeDetails.type === 'achievement'){
+            if(containsEmptyValues([resumeDetails.company])){
+                errorToast('Project Name, Stack are mandatory fields')
+                return;
+            }
             const new_achievement = {
                 _id:achievements.length + 1,
                 company:resumeDetails.company,
-                role:resumeDetails.role,
-                location:resumeDetails.location,
-                date:resumeDetails.date,
                 description:resumeDetails.description
             }
             setAchievements([...achievements,new_achievement])

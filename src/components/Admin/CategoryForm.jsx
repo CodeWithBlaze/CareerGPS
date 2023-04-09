@@ -7,6 +7,7 @@ import EditOrDelete from './EditOrDelete';
 import { addCategory, deleteCategory, getCategories, updateCategory } from '../../backend/api';
 import { Spinner } from 'react-activity';
 import { findAndRemove, findAndUpdate } from '../../helpers';
+import { errorToast, successToast } from '../Toast';
 function CategoryForm(props) {
     // create or update category form 
     const [category,setCategory] = useState({course:'',stream:''})
@@ -19,38 +20,60 @@ function CategoryForm(props) {
     // create or update semester form
     async function submitCategory(){
         setLoading(true)
-        const result = await addCategory(category)
-        setCategoryList([...categoryList,result])
-        setLoading(false)
-        alert('Category Added Successfully')
+        try{
+            const result = await addCategory(category)
+            setCategoryList([...categoryList,result])
+            successToast('Category Added')
+        }
+        catch(err){
+            console.log('Something went wrong')
+        }
+        finally{
+            setLoading(false)
+        }
     }
     async function getAllCategories(){
-        setLoadingCategory(true)
-        const result = await getCategories()
-        setCategoryList(result);
-        setLoadingCategory(false)
+        try {
+            setLoadingCategory(true)
+            const result = await getCategories()
+            setCategoryList(result);
+        } catch (error) {
+            errorToast('Something went wrong while fetching data')
+        }
+        finally{
+            setLoadingCategory(false)
+        }
+        
     }
     async function setCategoryUpdate(category){
-        setCategory({course:category.course_stream,stream:''})
+        const course_stream = category.course_stream.split('_')
+        setCategory({course:course_stream[0],stream:course_stream[1]})
         setUpdate(category._id)
     }
     async function categoryUpdate(){
-        setLoading(true)
-        const result = await updateCategory(update,category.course,category.stream)
-        const updated_category_list = findAndUpdate('_id',update,result,categoryList)
-        console.log(updated_category_list)
-        setCategoryList(updated_category_list)
-        setLoading(false)
-        setUpdate(null)
+        try {
+            setLoading(true)
+            const result = await updateCategory(update,category.course,category.stream)
+            const updated_category_list = findAndUpdate('_id',update,result,categoryList)
+            setCategoryList(updated_category_list)
+            successToast('Category Updated')
+        } catch (error) {
+            errorToast('Something went wrong while updating')
+        }
+        finally{
+            setLoading(false)
+            setUpdate(null)
+        }
+        
     }
     async function removeCategory(id){
-        console.log(id)
         deleteCategory(id)
         .then(()=>{
             const updated_list = findAndRemove('_id',id,categoryList)
             setCategoryList(updated_list)
+            successToast('Category Deleted')
         })
-        .catch(err=>console.log(err))
+        .catch((err)=>errorToast('Error while deleting Category'))
     }
     useEffect(()=>{
         getAllCategories()

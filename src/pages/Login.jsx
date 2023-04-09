@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import { login } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
 import LinkText from '../components/LinkText';
+import { hasFormValidDetails } from '../helpers';
 function Login(props) {
     const [loading,setLoading] = useState(false);
     const navigate = useNavigate()
@@ -14,8 +15,11 @@ function Login(props) {
         email:"",
         password:""
     })
+    
     async function signInUser(){
         try{
+            if(!hasFormValidDetails(userDetails))
+                return;
             setLoading(true);
             await login(userDetails.email,userDetails.password)
             navigate('/')

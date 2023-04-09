@@ -3,6 +3,7 @@ import Form from './Form';
 import { getAllGoalsBySemesterId, getCategories, getSemestersByCode, getTaskByGoal, updateTaskRank } from '../../backend/api';
 import '../../css/admin/arrange_task.css';
 import Button from '../Button';
+import { errorToast, successToast } from '../Toast';
 
 function ArrangeTask(props) {
     //list
@@ -21,31 +22,31 @@ function ArrangeTask(props) {
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories([...res]))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Error while fetching Categories'))
     },[])
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory,true)
             .then(res=>setSemesters([...res.semesters]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Semesters'))
     },[selectedCategory])
     useEffect(()=>{
         if(selectedSemester)
             getAllGoalsBySemesterId(selectedSemester)
             .then(res=>setGoals([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Goals'))
     },[selectedSemester])
     useEffect(()=>{
         if(selectedGoal)
             getTaskByGoal(selectedGoal)
             .then(res=>setTasks([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Error while fetching Tasks'))
     },[selectedGoal])
     function updateTaskSequence(){
         setLoading(true);
         updateTaskRank(placeTask,afterTask)
-        .then(()=>alert("Rank updated refresh to see changes"))
-        .catch((err)=>console.log(err))
+        .then(()=>successToast('Task Sequence Updated. Refresh to see the changes'))
+        .catch((err)=>errorToast('Task sequence change Failed'))
         .finally(()=>setLoading(false))
     }
     return (

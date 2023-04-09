@@ -5,6 +5,7 @@ import Button from '../Button';
 import Input from '../Input';
 import EditOrDelete from './EditOrDelete';
 import Form from './Form';
+import { errorToast, successToast } from '../Toast';
 
 function Goals(props) {
     const [categories,setCategories] = useState([])
@@ -21,15 +22,22 @@ function Goals(props) {
     const [update,setUpdate] = useState(null);
     const [updateLoading,setUpdateLoading] = useState(false)
     function addGoal(){
-        console.log(newGoalsList,goal)
         setNewGoalsList([...newGoalsList,{title:goal,id:newGoalsList.length}])
     }
     async function submitGoal(){
-        setLoading(true);
-        const updated_goals_list = await addGoals(selectedSemester,newGoalsList)
-        setLoading(false) 
-        setGoalsList([...updated_goals_list])
-        setNewGoalsList([])
+        try {
+            setLoading(true);
+            const updated_goals_list = await addGoals(selectedSemester,newGoalsList)
+            setGoalsList([...updated_goals_list])
+            setNewGoalsList([])
+            successToast('Goals Added') 
+        } catch (error) {
+            errorToast('Something went wrong while adding Goal')
+        }
+        finally{
+            setLoading(false) 
+        }
+        
     }
     async function setGoalForUpdate(goal){
         setGoal(goal.title)
@@ -43,11 +51,18 @@ function Goals(props) {
     }
     async function updateGoal(){
         if(update._id){
-            setUpdateLoading(true);
-            await updateGoalInDatabase(selectedSemester,update._id,goal)
-            const updatedList = updateGoalsList(update._id,goal)
-            setGoalsList(updatedList)
-            setUpdateLoading(false);
+            try {
+                setUpdateLoading(true);
+                await updateGoalInDatabase(selectedSemester,update._id,goal)
+                const updatedList = updateGoalsList(update._id,goal)
+                setGoalsList(updatedList)
+                successToast('Goal Updated')
+            } catch (error) {
+                errorToast('Something went wrong while updating Goal')
+            }
+            finally{
+                setUpdateLoading(false);
+            }
         }
         else if(update.id === 0 || update.id){
             const updated_goals_list = [...newGoalsList]
@@ -64,9 +79,15 @@ function Goals(props) {
     }
     async function deleteGoal(goal){
         if(goal._id){
-            await deleteGoalFromDatabase(selectedSemester,goal._id)
-            const updatedList = findAndRemove('_id',goal._id,goalsList)
-            setGoalsList([...updatedList])
+            try {
+                await deleteGoalFromDatabase(selectedSemester,goal._id)
+                const updatedList = findAndRemove('_id',goal._id,goalsList)
+                setGoalsList([...updatedList])
+                successToast('Goal Deleted')
+            } catch (error) {
+                errorToast('Something went wrong while deleting the toast')
+            }
+            
         }
         else if(goal.id === 0 || goal.id){
             const updatedList = newGoalsList.filter(g=>g.id !== goal.id)
@@ -79,19 +100,19 @@ function Goals(props) {
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories([...res]))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Something went wrong while fetching categories'))
     },[])
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory)
             .then(res=>setSemesterList([...res.semesters]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Something went wrong while fetching semesters'))
     },[selectedCategory])
     useEffect(()=>{
         if(selectedSemester)
             getAllGoalsBySemesterId(selectedSemester)
             .then(res=>setGoalsList([...res]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Something went wrong while fetching goals'))
     },[selectedSemester])
     return (
         <div className='admin-category'>

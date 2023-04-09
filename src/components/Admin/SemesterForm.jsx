@@ -6,6 +6,7 @@ import Button from '../Button';
 import Input from '../Input';
 import EditOrDelete from './EditOrDelete';
 import Form from './Form';
+import { errorToast, successToast } from '../Toast';
 
 function SemesterForm(props) {
     const [semester,setSemester] = useState('')
@@ -15,40 +16,56 @@ function SemesterForm(props) {
     const [loading,setLoading] = useState(false)
     const [update,setUpdate] = useState(null)
     async function addSemesterToDatabase(){
-        setLoading(true)
-        const new_added_semester = await addASemester(selectedCategory,semester)
-        setSemesterList([...new_added_semester.semesters])
-        setLoading(false)
+        try {
+            setLoading(true)
+            const new_added_semester = await addASemester(selectedCategory,semester)
+            setSemesterList([...new_added_semester.semesters])
+            successToast('Semester Added') 
+        } catch (error) {
+            errorToast('Something went wrong while adding Semester')
+        }
+        finally{
+            setLoading(false)
+        }
+        
     }
     function setSemesterForUpdate(semester){
         setUpdate(semester._id)
         setSemester(semester.name)
     }
     async function updateSemester(){
-        setLoading(true)
-        const updated_semester_list = await updateASemesterName(semester,update);
-        setSemesterList([...updated_semester_list.semesters])    
-        setLoading(false)
-        setUpdate(false);
+        try {
+            setLoading(true)
+            const updated_semester_list = await updateASemesterName(semester,update);
+            setSemesterList([...updated_semester_list.semesters]) 
+            successToast('Semester Updated')
+        } catch (error) {
+            errorToast('Something went wrong while updating the semester')
+        }
+        finally{
+            setLoading(false)
+            setUpdate(false);
+        } 
     }
     async function deleteSemester(semester){
         deleteASemester(semester._id)
         .then(()=>{
             const updatedList = findAndRemove('_id',semester._id,semesterList)
             setSemesterList(updatedList)
+            successToast('Semester Deleted')
         })
-        .catch(err=>console.log(err))
+        .catch((err)=>errorToast('Error occured while deleting the semester'))
     }
     useEffect(()=>{
         getCategories()
         .then(res=>setCategories(res))
-        .catch(err=>console.log(err))
+        .catch(err=>errorToast('Something went wrong while getting semesters'))
     },[])
     useEffect(()=>{
         if(selectedCategory)
             getSemestersByCode(selectedCategory)
             .then(res=>setSemesterList([...res.semesters]))
-            .catch(err=>console.log(err))
+            .catch(err=>errorToast('Something went wrong while getting semesters'))
     },[selectedCategory])
 
     return (

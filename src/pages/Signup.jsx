@@ -7,11 +7,14 @@ import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { addUsertoDatabase, getCategoriesAndSemesters } from '../backend/api';
 import LinkText from '../components/LinkText';
+import { errorToast } from '../components/Toast';
+import { hasFormValidDetails } from '../helpers';
+
 function Signup(props) {
     //variables
     const [error,setError] = useState('')
     const [category,setCategory] = useState([])
-    const [semesters,setSemesters] = useState('');
+    const [semesters,setSemesters] = useState([]);
     const navigate = useNavigate()
 
     const [userDetails,setUserDetails] = useState({
@@ -34,8 +37,11 @@ function Signup(props) {
         })
         .catch(err=>console.log(err))
     },[])
+    
     async function postUserData(){
         try{
+            if(!hasFormValidDetails(userDetails))
+                return;
             setLoading(true)
             const result = await addUsertoDatabase(userDetails);
             console.log(result)
@@ -45,8 +51,10 @@ function Signup(props) {
         }
         catch(err){
             // handle error
-            alert("Error occured")
-            console.log(err)
+            const regex = /\/(.*)\)/;
+            const match = regex.exec(err.message);
+            const extractedMessage = match[1];
+            errorToast(extractedMessage)
         }
         finally{
             setLoading(false);
