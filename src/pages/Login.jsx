@@ -54,6 +54,7 @@ function Login(props) {
                 <Input
                     placeholder={'Enter your password'}
                     customClass={'full-width'}
+                    type={'password'}
                     value={userDetails.password}
                     onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
