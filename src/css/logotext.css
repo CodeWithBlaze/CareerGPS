@@ -17,4 +17,14 @@
     background-color: #FF6060;
     margin-right: 20px;
 }
-
+@media only screen and (max-width: 800px) {
+    .icon-container{
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+    .icon-menu{
+        font-size: 20px;
+    }
+}

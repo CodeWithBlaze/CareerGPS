@@ -12,6 +12,49 @@ import '../css/main_app.css';
 import { Spinner } from 'react-activity';
 import { useNavigate } from 'react-router-dom';
 import profile_photo from '../asset/profile_image.png';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
+
+
+function UserProfile({profile,user}){
+  const navigate = useNavigate()  
+  return (
+    <div className='dashboard-profile'>
+            {!profile && <Spinner/>}
+            {profile && user && <>
+            <CircularImage img={profile.profile_image || profile_photo}/>
+            <h3 className='dashboard-profile-name'>{profile.full_name}</h3>
+            <label className='dashboard-profile-email'>{user.email}</label>
+            <Button title='View Profile' customClass={'dashboard-profile-btn'}
+            onClick={()=>navigate('/profile',{state:{profile}})}
+            />
+            {/* <TrackBox text={'Topic Progress: On Track'} progress={32}/> */}
+            {/* <TrackBox text={'Semester Progress: On Track'} progress={52}/> */}
+            </>}
+    </div>
+  )
+}
+function TaskDashboard({goals,activeTask,setActiveTask,setCurrentTask,currentTask}){
+  return(
+    <div className='dashboard-task'>
+            {
+              goals.length > 0 && activeTask.length > 0 &&
+              goals.map(goal=>
+              <TaskCategory
+              activeTask={activeTask}
+              setActiveTask={setActiveTask} 
+              key={goal._id} 
+              heading={goal.goal} 
+              subheading={goal.name} 
+              goal_id={goal._id} 
+              semester_id={goal.semester_id} 
+              setTask={setCurrentTask} 
+              currentTask={currentTask}/>)
+            }
+      </div>
+  )
+}
 
 function Journey(props) {
     const [profile,setProfile] = useState(null)
@@ -21,7 +64,11 @@ function Journey(props) {
     const [currentTaskContent,setCurrentTaskContent] = useState(null); 
     const [celebrate,setCelebrate] = useState(false);
     const [activeTask,setActiveTask] = useState([])
-    const navigate = useNavigate()    
+    //check for mobile
+    const isMobile = useMediaQuery('(max-width: 450px)')  
+    // opening and closing state for mobile
+    const [isProfileOpen,setIsProfileOpen] = useState(false);
+    const [isTaskOpen,setIsTaskOpen] = useState(false);
     useEffect(()=>{
       if(user)
         getProfile()
@@ -56,39 +103,34 @@ function Journey(props) {
         
       }
     },[currentTask])
+    useEffect(()=>{
+      if(!isMobile){
+        setIsProfileOpen(true);
+        setIsTaskOpen(true)
+      }
+      
+    },[isMobile])
     return (
         <>
         <Navbar activeMenu='My Journey'/>
         <div className='main-app-container'>
-          <div className='dashboard-profile'>
-            {!profile && <Spinner/>}
-            {profile && user && <>
-            <CircularImage img={profile.profile_image || profile_photo}/>
-            <h3 className='dashboard-profile-name'>{profile.full_name}</h3>
-            <label className='dashboard-profile-email'>{user.email}</label>
-            <Button title='View Profile' customClass={'dashboard-profile-btn'}
-            onClick={()=>navigate('/profile',{state:{profile}})}
-            />
-            <TrackBox text={'Topic Progress: On Track'} progress={32}/>
-            <TrackBox text={'Semester Progress: On Track'} progress={52}/>
-            </>}
-          </div>
-          <div className='dashboard-task'>
-            {
-              goals.length > 0 && activeTask.length > 0 &&
-              goals.map(goal=>
-              <TaskCategory
-              activeTask={activeTask}
-              setActiveTask={setActiveTask} 
-              key={goal._id} 
-              heading={goal.goal} 
-              subheading={goal.name} 
-              goal_id={goal._id} 
-              semester_id={goal.semester_id} 
-              setTask={setCurrentTask} 
-              currentTask={currentTask}/>)
-            }
-          </div>
+          {isMobile && <div className='Opener' onClick={()=>setIsProfileOpen(!isProfileOpen)}>
+            <FontAwesomeIcon icon={isProfileOpen?faCaretDown:faCaretRight}/>
+            <h3>Profile</h3>
+          </div>}
+          {isProfileOpen && <UserProfile profile={profile} user={user}/>}
+          {isMobile && <div className='Opener' onClick={()=>setIsTaskOpen(!isTaskOpen)}>
+            <FontAwesomeIcon icon={isTaskOpen?faCaretDown:faCaretRight}/>
+            <h3>Tasks</h3>
+          </div>}
+          {isTaskOpen && <TaskDashboard 
+          goals={goals}
+          activeTask={activeTask}
+          setActiveTask={setActiveTask}
+          setCurrentTask={setCurrentTask}
+          currentTask={currentTask}
+          />}
+          
           <div className='dashboard-task-details'>
             {!currentTask && <p className="no-details-heading">Click on a task to show the Task details</p>}
             { currentTask && !currentTaskContent && <Spinner/>} 

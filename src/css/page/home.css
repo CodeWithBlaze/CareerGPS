@@ -8,6 +8,7 @@
 .card-container{
     display: flex;
     margin-top:40px;
+    align-items: stretch;
 }
 .heading-subheading{
     margin-top: 150px;
@@ -37,4 +38,36 @@
 .img-goal{
     width:1080px;
     height: auto;
+}
+/* responsiveness code starts here */
+
+@media only screen and (max-width: 1500px) {
+    .img-goal{
+        width:100%;
+        height: auto;
+    }
+    .white-board{
+        padding-left: 15px;
+        padding-right:15px;
+        height:250px;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .home-info{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 150px;
+    }
+    .home-info h1{
+        font-size: 25px;
+        margin-right: 15px;
+    }
+    .home-info p{
+        font-size: 20px;
+        margin-right: 15px;
+        max-width: 400px;
+    }
+    .home-info p:last-child{
+        margin-right: 0px;
+    }
 }

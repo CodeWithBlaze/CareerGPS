@@ -7,3 +7,21 @@
     width:550px;
     height: auto;
 }
+/* responsiveness code starts here */
+@media only screen and (max-width: 800px) {
+    #task{
+        width: 330px !important;
+    }
+}
+@media only screen and (max-width: 1150px) {
+    .poster{
+        margin-bottom: 30px;
+        width: 440px;
+    }
+    
+}
+@media only screen and (max-width: 1050px) {
+    .img-heading-container{
+        flex-direction: column-reverse;
+    }
+}

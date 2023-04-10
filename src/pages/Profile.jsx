@@ -14,8 +14,10 @@ import { Spinner } from 'react-activity';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { errorToast, successToast } from '../components/Toast';
+import OnlyDesktop from './OnlyDesktop';
+import useMediaQuery from '../hooks/useMediaQuery';
     
-  
+
 
 function ResumeEditor({profile}){
     useEffect(()=>{
@@ -119,16 +121,33 @@ function ResumeEditor({profile}){
 function Profile() {
     const location = useLocation()
     const userProfile = location.state.profile 
-    const MENU_ITEMS = [
-        {name:'My Resume', value:'resume',component:<ResumeEditor profile={userProfile}/>},
+    const isMobile = useMediaQuery('(max-width: 450px)')
+    
+    const [MENU_ITEMS,setMENU_ITEMS] = useState([
+        {name:'My Resume', value:'resume',component:isMobile?<OnlyDesktop/>:<ResumeEditor profile={userProfile}/>},
         {name:'Account', value:'account',component:<Accounts profile={userProfile}/>},
-    ]
+    ])
+    useEffect(()=>{
+        if(isMobile){
+            const UPDATED_ITEMS = [...MENU_ITEMS]
+            UPDATED_ITEMS[0] = {name:'My Resume', value:'resume',component:<OnlyDesktop/>}
+            console.log(UPDATED_ITEMS)
+            setMENU_ITEMS(UPDATED_ITEMS)
+        }
+        else{
+            const UPDATED_ITEMS = [...MENU_ITEMS]
+            UPDATED_ITEMS[0] = {name:'My Resume', value:'resume',component:<ResumeEditor profile={userProfile}/>}
+            setMENU_ITEMS(UPDATED_ITEMS)
+        }
+    },[isMobile])
+    
     return (
         <div>
             <Navbar/>
             <div className='profile-container'>
                 <div className='profile-page-other-details'>
                         <Menu MENU_ITEMS={MENU_ITEMS} />
+                        
                 </div>
             </div>
         </div>

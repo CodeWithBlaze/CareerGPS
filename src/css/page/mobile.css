@@ -1,0 +1,156 @@
+/* for mobile */
+@media only screen and (max-width: 450px) {
+    .navbar-menu li:last-child{
+        margin-right: 0px;
+    }
+    .color-container{
+        margin:15px !important;
+        padding:30px;
+    }
+    .poster{
+        width: 100%;
+    }
+    #get-started{
+        margin:0px !important;
+        margin-bottom: 15px !important;
+    }
+    #login{
+        margin:0px !important;
+    }
+    .btn-container{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-container{
+        flex-direction: column;
+    }
+    .familiar-card{
+        margin-bottom: 30px;
+    }
+    #task{
+        display: none;
+    }
+    .title-emoji-container{
+        flex-direction: column-reverse;
+    }
+    .title-text{
+        text-align: center;
+    }
+    .home-info{
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    #heading-subheading-3{
+        max-width: 100%;
+        margin-top: 15px;
+    }
+    #section-3-heading{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    #section-3-subheading{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    #section-4-paragraph-1{
+        margin-top: 30px;
+    }
+    #section-4-paragraph-2{
+        margin-top: 30px;
+    }
+    #try-us-container{
+        margin:0px;
+    }
+    #section-5-heading{
+        margin-top: 15px;
+        font-size: 25px !important;
+    }
+    .white-board{
+        margin-top: 15px;
+        height: 150px;
+        background-color: var(--light-purple);
+    }
+    .familiar-card img{
+        text-align: center;
+    }
+    .img-goal{
+        width:120%;
+    }
+    .familiar-card{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .signup-container{
+        flex-direction: column;
+    }
+    .signup-image{
+        width: 250px;
+        margin-bottom: 35px;
+    }
+    .signup-form-container{
+        width: 100vw;
+        padding:30px;
+        
+    }
+    .signup-form-container h1{
+        font-size: 30px;
+        text-align: center;
+    }
+    .signup-form-container h3{
+        margin-top: 15px;
+        text-align: center;
+    }
+    .user-name-container{
+        flex-direction: column;
+    }
+    .user-name-container input{
+        width:100%;
+        margin-bottom: 10px;
+    }
+    .main-app-container{
+        flex-direction: column;
+    }
+    .dashboard-profile{
+        width: 100%;
+    }
+    .dashboard-task{
+        width: 100%;
+    }
+    .dashboard-task-details{
+        width: 100%;
+    }
+    .task-details-mark-complete-btn{
+        width: 100%;
+    }
+    .account-screen-container{
+        flex-direction: column;
+    }
+    .account-photo-section{
+        width: 100%;
+    }
+    .account-details-section{
+        overflow: hidden;
+        width: 100%;
+        padding:0px;
+        
+    }
+    .accounts-form{
+        width: 100%;
+    }
+    .only-desktop-screen-container{
+        width: 100%;
+        height: 250px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+        background-color: grey;
+    }
+    .profile-page-other-details{
+        width: 100%;
+    }
+}

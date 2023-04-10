@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/menu.css';
 
 function Menu({MENU_ITEMS}) {
     const [active,setActive] = useState({item:MENU_ITEMS[0].value,component:MENU_ITEMS[0].component})
+    useEffect(()=>{
+        setActive({item:MENU_ITEMS[0].value,component:MENU_ITEMS[0].component})
+    },[MENU_ITEMS])
     return (
         <div className='menu-container'>
             <ul className='menu-items-container'>
@@ -16,6 +19,7 @@ function Menu({MENU_ITEMS}) {
             </ul>
             <div className='menu-component'>
                     {active.component}
+                    
             </div>
         </div>
     );

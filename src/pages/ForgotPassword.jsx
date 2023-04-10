@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import { useState } from 'react';
 import { sendResetEmailToUser } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
+import '../css/page/forgot_password.css';
 function ForgotPassword(props) {
     const [email,setEmail] = useState('')
     const [loading,setLoading] = useState(false)
@@ -21,9 +22,9 @@ function ForgotPassword(props) {
     return (
         <>
         <Navbar activeMenu='Home'/>
-        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
-            <img src={password_reset_image} style={{width:450,height:'auto',marginRight:60}}/>
-            <Form>
+        <div className='forgot-password-container'>
+            <img src={password_reset_image} className='forgot-password-image'/>
+            <Form customClass='forgot-password-form'>
                 <Input
                 placeholder={'Enter your email address'}
                 customClass={'full-width'}

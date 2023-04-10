@@ -6,7 +6,7 @@ import { auth } from './config/firebase';
 import UserContext from './context/UserContext';
 import Home from './pages/Home';
 import Register from './Register'
-
+import './css/page/mobile.css'
 function App() {
   const [user,setUser] = useState(false)
   

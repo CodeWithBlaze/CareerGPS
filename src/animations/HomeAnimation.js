@@ -16,7 +16,6 @@ export function changeOutineColor(target,toColor='black',transparent=false,textC
 export function changeScale(target,scale){
     gsap.to(target,{scale:scale})
 }
-
 // all home animations
 export function activateHomeAnimations(){
     //navbar

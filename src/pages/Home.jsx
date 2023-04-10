@@ -97,7 +97,7 @@ function Home(props) {
                 />
                 </div>
             </section>
-            <section className='heading-subheading'>
+            <section className='heading-subheading' id="heading-subheading-3">
                 <MainHeadings 
                     customContainerStyle={{textAlign:'center'}}
                     title_id={'section-3-heading'}
@@ -139,7 +139,7 @@ function Home(props) {
                 <p id='section-4-paragraph-1'>we provide roadmap that is pratical,concise and easy to follow</p>
                 <p id='section-4-paragraph-2'>you will have all the practical personality,reasoning skills that is required</p>
             </section>
-            <section className='container'>
+            <section className='container' id='try-us-container'>
                 <ColorContainer customStyle={{backgroundColor:'var(--light-purple)'}}>
                     <MainHeadings 
                         customContainerStyle={{display:'flex',flexDirection:'column-reverse',alignItems:'center'}}
