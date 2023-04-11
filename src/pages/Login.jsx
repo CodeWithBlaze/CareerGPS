@@ -7,7 +7,8 @@ import Button from '../components/Button';
 import { login } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
 import LinkText from '../components/LinkText';
-import { hasFormValidDetails } from '../helpers';
+import { hasFormValidDetails, isEmailValid } from '../helpers';
+import { errorToast } from '../components/Toast';
 function Login(props) {
     const [loading,setLoading] = useState(false);
     const navigate = useNavigate()
@@ -15,22 +16,37 @@ function Login(props) {
         email:"",
         password:""
     })
-    
+    // error variables
+    const [emailError,setEmailError] = useState('')
+    const [passwordError,setPasswordError] = useState('')
     async function signInUser(){
         try{
             if(!hasFormValidDetails(userDetails))
                 return;
+            
             setLoading(true);
             await login(userDetails.email,userDetails.password)
             navigate('/')
         }
         catch(err){
-            alert("Error")
-            console.log(err);
+            const regex = /\/(.*)\)/;
+            const match = regex.exec(err.message);
+            const extractedMessage = match[1];
+            errorToast(extractedMessage)
         }
         finally{
             setLoading(false)
         }
+    }
+    function checkEmail(){
+        if(userDetails.email === "")
+            setEmailError('Email cannot be empty')
+        else if(!isEmailValid(userDetails.email))
+            setEmailError('Not a valid email')
+    }
+    function checkPassword(){
+        if(userDetails.password.length < 8)
+            setPasswordError('Password length has be 8 character')
     }
     return (
         <>
@@ -49,6 +65,9 @@ function Login(props) {
                     customClass={'full-width'}
                     style={{marginTop:15}}
                     value={userDetails.email}
+                    onBlur={()=>checkEmail()}
+                    error={emailError}
+                    setError={setEmailError}
                     onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})}
                 />
                 <Input
@@ -56,6 +75,9 @@ function Login(props) {
                     customClass={'full-width'}
                     type={'password'}
                     value={userDetails.password}
+                    onBlur={()=>checkPassword()}
+                    error={passwordError}
+                    setError={setPasswordError}
                     onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />
                 <LinkText

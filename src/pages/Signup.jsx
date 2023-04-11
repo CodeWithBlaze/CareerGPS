@@ -8,11 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { addUsertoDatabase, getCategoriesAndSemesters } from '../backend/api';
 import LinkText from '../components/LinkText';
 import { errorToast } from '../components/Toast';
-import { hasFormValidDetails } from '../helpers';
+import { hasFormValidDetails, isEmailValid } from '../helpers';
 
 function Signup(props) {
     //variables
-    const [error,setError] = useState('')
     const [category,setCategory] = useState([])
     const [semesters,setSemesters] = useState([]);
     const navigate = useNavigate()
@@ -26,6 +25,12 @@ function Signup(props) {
         semester:""
     })
     const [loading,setLoading] = useState(false);
+
+    //error variables
+    const [emailError,setEmailError] = useState('')
+    const [passwordError,setPasswordError] = useState('')
+    const [firstNameError,setFirstNameError] = useState('')
+    const [lastNameError,setLastNameError] = useState('')
     // function
     useEffect(()=>{
         getCategoriesAndSemesters()
@@ -61,6 +66,25 @@ function Signup(props) {
         }
         
     }
+    function checkEmail(){
+        if(userDetails.email === "")
+            setEmailError('Email cannot be empty')
+        else if(!isEmailValid(userDetails.email))
+            setEmailError('Not a valid email')
+    }
+    function checkPassword(){
+        if(userDetails.password.length < 8)
+            setPasswordError('Password length has be 8 character')
+    }
+    function checkFirstName(){
+        if(userDetails.first_name === "")
+            setFirstNameError('First Name cannot be empty')
+        
+    }
+    function checkLastName(){
+        if(userDetails.last_name === "")
+            setLastNameError('Last Name cannot be empty')
+    }
     function updateUserCourse(id){
         // find the course and take the semester
         const selectedCourse = (category.filter(item=>item._id === id))[0]
@@ -83,12 +107,16 @@ function Signup(props) {
                 placeholder={'First Name'}
                 style={{marginRight:10}}
                 value={userDetails.first_name}
+                error={firstNameError}
+                setError={setFirstNameError}
+                onBlur={()=>checkFirstName()}
                 onChange={(e)=>setUserDetails({...userDetails,first_name:e.target.value})}
                 />
                 <Input
                 placeholder={'Last Name'}
-                error={error}
-                setError={setError}
+                error={lastNameError}
+                setError={setLastNameError}
+                onBlur={()=>checkLastName()}
                 value={userDetails.last_name}
                 onChange={(e)=>setUserDetails({...userDetails,last_name:e.target.value})}
                 />
@@ -98,12 +126,18 @@ function Signup(props) {
                     placeholder={'Enter your email'}
                     customClass={'full-width'}
                     value={userDetails.email}
+                    error={emailError}
+                    setError={setEmailError}
+                    onBlur={()=>checkEmail()}
                     onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})}
                 />
                 <Input
                     placeholder={'Enter your password'}
                     customClass={'full-width'}
                     type={'password'}
+                    error={passwordError}
+                    setError={setPasswordError}
+                    onBlur={()=>checkPassword()}
                     value={userDetails.password}
                     onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}
                 />

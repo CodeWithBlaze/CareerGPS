@@ -8,16 +8,30 @@ import { useState } from 'react';
 import { sendResetEmailToUser } from '../backend/auth';
 import { useNavigate } from 'react-router-dom';
 import '../css/page/forgot_password.css';
+import { isEmailValid } from '../helpers';
+import { errorToast } from '../components/Toast';
+
 function ForgotPassword(props) {
     const [email,setEmail] = useState('')
     const [loading,setLoading] = useState(false)
+    const [error,setError] = useState('')
     const navigate = useNavigate()
     async function sendResetEmail(){
+        if(!isEmailValid(email)){
+            errorToast("Not a valid Email")
+            return;
+        }
         setLoading(true);
         await sendResetEmailToUser(email)
         setLoading(false)
         alert("Password Reset email has been sent")
         navigate('/register') 
+    }
+    function checkEmail(){
+        if(email === "")
+            setError('Email cannot be empty')
+        else if(!isEmailValid(email))
+            setError('Not a valid email')
     }
     return (
         <>
@@ -29,6 +43,9 @@ function ForgotPassword(props) {
                 placeholder={'Enter your email address'}
                 customClass={'full-width'}
                 value={email}
+                error={error}
+                setError={setError}
+                onBlur={()=>checkEmail()}
                 onChange={(e)=>setEmail(e.target.value)}
                 />
                 <Button
