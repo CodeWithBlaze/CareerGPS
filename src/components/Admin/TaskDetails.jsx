@@ -28,10 +28,14 @@ function TaskDetails(props) {
         e.preventDefault()
         const reader = new FileReader()
         reader.onload = async (e) => { 
-          const text = (e.target.result)
-          setContent(text)
+          if(e.target && e.target.result){
+            const text = (e.target.result)
+            setContent(text)
+          }
+          
         };
-        reader.readAsText(e.target.files[0])
+        if(e.target && e.target.files.length > 0)
+            reader.readAsText(e.target.files[0])
     }
     useEffect(()=>{
         getCategories()
@@ -90,8 +94,11 @@ function TaskDetails(props) {
                 type={'file'} 
                 className='profile-photo-label'
                 onChange={(event) => {
-                    setTaskFile(event.target.files[0])
-                    showFile(event);
+                    if(event.target && event.target.files.length > 0){
+                        setContent('')
+                        setTaskFile(event.target.files[0])
+                        showFile(event);
+                    }
                 }}
                 />
                 <div>
